@@ -4,6 +4,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Get,
   HttpStatus,
   Post,
   Req,
@@ -35,5 +36,18 @@ export class UsuarioController {
       });
   }
 
-  //@get()
+  // @get('')
+  @Get('login')
+  async login(@Res() res: any, @Req() req: any) {
+    return this.service
+      .verificarEmailSenha(req)
+      .then((data) => {
+        res
+          .status(HttpStatus.OK)
+          .json({ message: 'Login efetuado com sucesso', data });
+      })
+      .catch((error) => {
+        throw new BadRequestException(error);
+      });
+  }
 }

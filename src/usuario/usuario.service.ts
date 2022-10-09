@@ -1,3 +1,4 @@
+import { niveisAcesso } from './consts/niveisAcesso.const';
 import { UsuarioSchema } from './schemas/usuario.schema';
 import { CriarUsuarioDto } from './dtos/usuario.dto';
 import { IUsuario } from './interfaces/usuario.interface';
@@ -8,19 +9,31 @@ import { NivelAcesso } from './enums/niveisAcesso.enum';
 import { btoa } from 'buffer';
 import { timingSafeEqual } from 'crypto';
 
+export type User = any;
+
 @Injectable()
 export class UsuarioService {
   constructor(
     @InjectModel('Usuarios')
     private readonly UsuarioModel: Model<IUsuario>,
   ) {}
-  async criarUsuario(req, usuario: CriarUsuarioDto): Promise<IUsuario> {
-    // console.log({
-    //   ...usuario,
-    //   email: atob(usuario.email),
-    //   senha: atob(usuario.senha),
-    // });
+  private readonly users = [
+    {
+      userId: 1,
+      username: 'john',
+      password: 'changeme',
+    },
+    {
+      userId: 2,
+      username: 'maria',
+      password: 'guess',
+    },
+  ];
 
+  async findOne(username: string): Promise<User | undefined> {
+    return this.users.find((user) => user.username === username);
+  }
+  async criarUsuario(req, usuario: CriarUsuarioDto): Promise<IUsuario> {
     usuario = {
       ...usuario,
       nivelAcesso: NivelAcesso[usuario.nivelAcesso],
@@ -44,10 +57,11 @@ export class UsuarioService {
     return await this.UsuarioModel.find();
   }
 
-  private async consultarUsuarioPorChaveValor(
+  public async consultarUsuarioPorChaveValor(
     chave: string,
-    valor: string | number,
+    valor: any,
   ): Promise<IUsuario> {
+    valor = chave === 'email' || 'senha' ? btoa(valor) : valor;
     return await this.UsuarioModel.findOne({ [chave]: valor });
   }
 
@@ -59,15 +73,21 @@ export class UsuarioService {
   }
 
   async verificarEmailSenha(req): Promise<IUsuario> {
-    const { email, senha } = req.params;
+    const { email, senha } = req.query;
     const usuario = { email, senha };
-    const usuarioExistente = await this.consultarUsuarioPorChaveValor(
+
+    let usuarioExistente: any = await this.consultarUsuarioPorChaveValor(
       'email',
       btoa(usuario.email),
     );
-    if (usuarioExistente.senha === btoa(usuario.senha)) {
-      console.log('Esse usuario Existe!');
-      return usuarioExistente;
+
+    if (usuarioExistente && usuarioExistente.senha === btoa(usuario.senha)) {
+      usuarioExistente = {
+        ...usuarioExistente,
+        nivelAcesso: NivelAcesso[usuarioExistente.nivelAcesso],
+      };
+      return usuarioExistente._doc;
     }
+    throw 'email ou senha incorreto';
   }
 }

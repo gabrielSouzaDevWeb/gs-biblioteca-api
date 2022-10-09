@@ -6,6 +6,7 @@ export const UsuarioSchema = new mongoose.Schema(
     cargo: String,
     nivelAcesso: { type: Intl },
     email: String,
+    telefone: { type: Intl },
     senha: String,
     dtCriacao: Date,
     dtAlteracao: Date,

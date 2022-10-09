@@ -1,4 +1,5 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNumber, IsNotEmpty, IsEmail } from '@nestjs/class-validator';
+// import { IsNotEmpty } from 'class-validator';
 
 export class CriarUsuarioDto {
   @IsNotEmpty()
@@ -8,6 +9,11 @@ export class CriarUsuarioDto {
   nivelAcesso: string;
 
   @IsNotEmpty()
+  @IsNumber()
+  telefone: number;
+
+  @IsNotEmpty()
+  @IsEmail()
   email: string;
 
   @IsNotEmpty()
