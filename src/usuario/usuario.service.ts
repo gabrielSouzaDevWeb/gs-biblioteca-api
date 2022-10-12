@@ -6,7 +6,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { NivelAcesso } from './enums/niveisAcesso.enum';
-import { btoa } from 'buffer';
+
 import { timingSafeEqual } from 'crypto';
 
 export type User = any;

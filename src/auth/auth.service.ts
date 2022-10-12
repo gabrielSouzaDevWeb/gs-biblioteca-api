@@ -3,7 +3,6 @@ import { UsuarioService } from './../usuario/usuario.service';
 import { Injectable } from '@nestjs/common';
 import { btoa } from 'buffer';
 import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
@@ -16,14 +15,14 @@ export class AuthService {
     const usuario: IUsuario =
       await this.usuarioService.consultarUsuarioPorChaveValor('email', email);
     if (usuario && usuario.senha === btoa(password)) {
-      const { senha, ...result } = usuario;
+      // const { senha, ...result } = usuario;
       return usuario;
     }
-    return 0;
+    return null;
   }
 
   async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
+    const payload = { email: user.email, senha: user.senha };
     return {
       access_token: this.jwtService.sign(payload),
     };
