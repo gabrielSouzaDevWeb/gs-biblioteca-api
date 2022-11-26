@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 import { UsuarioModule } from './usuario/usuario.module';
 import { AuthModule } from './auth/auth.module';
 
+() =>{}
+
 @Module({
   imports: [
     ConfigModule.forRoot({
