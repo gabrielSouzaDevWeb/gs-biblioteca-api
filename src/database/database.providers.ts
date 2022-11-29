@@ -13,7 +13,7 @@ export const databaseProviders = [
         database: 'gs-biblioteca-api',
         entities: [__dirname + './../**/*.entity{.ts,.js}'],
         migrations: [__dirname + './../../dist/migrations/*.js'],
-        synchronize: true,
+        synchronize: false,
       });
 
       return dataSource.initialize();
