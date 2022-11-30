@@ -1,32 +1,29 @@
-import { CriarUsuarioDto } from './dtos/usuario.dto';
-import { UsuarioService } from './usuario.service';
+import { IUsuario } from './interface/usuario.interface';
+import { CriarUsuarioDto } from './dto/usuario.dto';
+import { UsuariosService } from './usuario.service';
 import {
-  BadRequestException,
-  Body,
   Controller,
   Get,
+  Res,
+  Req,
   HttpStatus,
   Post,
-  Req,
-  Res,
+  BadRequestException,
+  Body,
 } from '@nestjs/common';
 
 @Controller('usuario')
-export class UsuarioController {
-  constructor(private readonly service: UsuarioService) {}
+export class UsuariosController {
+  constructor(private usuariosService: UsuariosService) {}
 
-  @Post('')
-  async criarUsuario(
-    @Res() res: any,
-    @Req() req: any,
-    @Body() usuario: CriarUsuarioDto,
-  ) {
-    return this.service
-      .criarUsuario(req, usuario)
+  @Get()
+  async pegarTodosOsRegistros(@Req() req, @Res() res) {
+    return this.usuariosService
+      .findAll()
       .then((data) => {
         return res
           .status(HttpStatus.OK)
-          .json({ message: 'Usuario criado com sucesso!', data });
+          .json({ message: 'cosulta realizada com sucesso!', data });
       })
       .catch((err) => {
         throw new BadRequestException({
@@ -36,18 +33,24 @@ export class UsuarioController {
       });
   }
 
-  // @get('')
-  @Get('login')
-  async login(@Res() res: any, @Req() req: any) {
-    return this.service
-      .verificarEmailSenha(req)
+  @Post()
+  async criarUsuario(
+    @Req() req,
+    @Res() res: any,
+    @Body() criarUsuarioDto: CriarUsuarioDto,
+  ): Promise<any> {
+    return this.usuariosService
+      .criarUsuario(req, criarUsuarioDto)
       .then((data) => {
-        res
-          .status(HttpStatus.OK)
-          .json({ message: 'Login efetuado com sucesso', data });
+        return res
+          .status(HttpStatus.CREATED)
+          .json({ message: 'registro criado com sucesso!', data });
       })
-      .catch((error) => {
-        throw new BadRequestException(error);
+      .catch((err) => {
+        throw new BadRequestException({
+          message: 'Erro ao cadastrar usuario',
+          error: err,
+        });
       });
   }
 }

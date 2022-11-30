@@ -1,93 +1,43 @@
-import { niveisAcesso } from './consts/niveisAcesso.const';
-import { UsuarioSchema } from './schemas/usuario.schema';
-import { CriarUsuarioDto } from './dtos/usuario.dto';
-import { IUsuario } from './interfaces/usuario.interface';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Injectable } from '@nestjs/common';
-import { NivelAcesso } from './enums/niveisAcesso.enum';
-
-import { timingSafeEqual } from 'crypto';
-
-export type User = any;
+import { NivelAcesso } from './enum/niveisAcesso.enum';
+import { Usuarios } from './entity/usuarios.entity';
+import { Injectable, Inject, BadRequestException } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { IUsuario } from './interface/usuario.interface';
 
 @Injectable()
-export class UsuarioService {
+export class UsuariosService {
   constructor(
-    @InjectModel('Usuarios')
-    private readonly UsuarioModel: Model<IUsuario>,
+    @Inject('USUARIO_REPOSITORY')
+    private usuarioRepository: Repository<Usuarios>,
   ) {}
-  private readonly users = [
-    {
-      userId: 1,
-      username: 'john',
-      password: 'changeme',
-    },
-    {
-      userId: 2,
-      username: 'maria',
-      password: 'guess',
-    },
-  ];
 
-  async findOne(username: string): Promise<User | undefined> {
-    return this.users.find((user) => user.username === username);
+  async findAll(): Promise<Array<IUsuario>> {
+    return this.usuarioRepository.find();
   }
-  async criarUsuario(req, usuario: CriarUsuarioDto): Promise<IUsuario> {
+
+  async criarUsuario(req, usuario): Promise<IUsuario> {
+    const usuarioJaCadastrado = await this.consultarUsuarioPorChaveValor(
+      'email',
+      usuario.email,
+    );
+    if (usuarioJaCadastrado) {
+      throw new BadRequestException('Já existe um usuário com esse email');
+    }
     usuario = {
       ...usuario,
       nivelAcesso: NivelAcesso[usuario.nivelAcesso],
       email: btoa(usuario.email),
       senha: btoa(usuario.senha),
     };
-
-    const usuarioJaCadastrado = await this.consultarUsuarioPorChaveValor(
-      'email',
-      usuario.email,
-    );
-
-    if (usuarioJaCadastrado) {
-      throw new Error('O usuario já está cadastrado');
-    }
-
-    return await new this.UsuarioModel(usuario).save();
-  }
-
-  async pegarTodosUsuarios(): Promise<Array<IUsuario>> {
-    return await this.UsuarioModel.find();
+    return this.usuarioRepository.save(usuario);
   }
 
   public async consultarUsuarioPorChaveValor(
     chave: string,
     valor: any,
   ): Promise<IUsuario> {
+    //to-do: alterar a criptografia
     valor = chave === 'email' || 'senha' ? btoa(valor) : valor;
-    return await this.UsuarioModel.findOne({ [chave]: valor });
-  }
-
-  async pegarUsuarioPorEmail(req, usuario) {
-    return await this.consultarUsuarioPorChaveValor(
-      'email',
-      btoa(usuario.email),
-    );
-  }
-
-  async verificarEmailSenha(req): Promise<IUsuario> {
-    const { email, senha } = req.query;
-    const usuario = { email, senha };
-
-    let usuarioExistente: any = await this.consultarUsuarioPorChaveValor(
-      'email',
-      btoa(usuario.email),
-    );
-
-    if (usuarioExistente && usuarioExistente.senha === btoa(usuario.senha)) {
-      usuarioExistente = {
-        ...usuarioExistente,
-        nivelAcesso: NivelAcesso[usuarioExistente.nivelAcesso],
-      };
-      return usuarioExistente._doc;
-    }
-    throw 'email ou senha incorreto';
+    return this.usuarioRepository.findOneBy({ [chave]: valor });
   }
 }
