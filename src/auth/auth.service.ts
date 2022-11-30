@@ -1,4 +1,4 @@
-import { IUsuario } from './../usuario/interfaces/usuario.interface';
+import { IUsuario } from './../usuario/interface/usuario.interface';
 import { UsuarioService } from './../usuario/usuario.service';
 import { Injectable } from '@nestjs/common';
 import { btoa } from 'buffer';

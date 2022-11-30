@@ -1,6 +1,6 @@
 import { IUsuario } from './interface/usuario.interface';
 import { CriarUsuarioDto } from './dto/usuario.dto';
-import { UsuariosService } from './usuario.service';
+import { UsuarioService } from './usuario.service';
 import {
   Controller,
   Get,
@@ -14,7 +14,7 @@ import {
 
 @Controller('usuario')
 export class UsuariosController {
-  constructor(private usuariosService: UsuariosService) {}
+  constructor(private usuariosService: UsuarioService) {}
 
   @Get()
   async pegarTodosOsRegistros(@Req() req, @Res() res) {
