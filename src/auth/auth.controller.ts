@@ -1,7 +1,15 @@
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { AuthService } from './auth.service';
-import { Controller, Request, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Request,
+  Get,
+  Post,
+  UseGuards,
+  Response,
+  HttpStatus,
+} from '@nestjs/common';
 
 @Controller('auth')
 export class AuthController {
@@ -9,15 +17,23 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Request() req) {
-    return this.authService.login(req.user);
+  async login(@Request() req, @Response() res) {
+    return this.authService
+      .login(req.user)
+      .then((data) => {
+        res.status(HttpStatus.OK).json({
+          message: 'O usuário está autorizado a acessar o sistema',
+          data,
+        });
+      })
+      .catch((err) => {
+        return res.status(HttpStatus.BAD_REQUEST);
+      });
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
-    console.log(19, 'controller', req.user);
-
     return req.user;
   }
 }

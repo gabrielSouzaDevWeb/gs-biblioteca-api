@@ -9,7 +9,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath: '.development.env' }),
+    ConfigModule.forRoot({ envFilePath: '.env.example' }),
     UsuarioModule,
     PassportModule,
     JwtModule.register({
