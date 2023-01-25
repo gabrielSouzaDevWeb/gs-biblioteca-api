@@ -15,6 +15,7 @@ import { AuthController } from './auth.controller';
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '6000s' },
+      // signOptions: { expiresIn: '6000s', algorithm: 'RS256' },
     }),
   ],
   controllers: [AuthController],
