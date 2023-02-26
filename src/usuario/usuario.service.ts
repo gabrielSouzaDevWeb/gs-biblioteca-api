@@ -9,17 +9,20 @@ export class UsuarioService {
   constructor(
     @Inject('USUARIO_REPOSITORY')
     private usuarioRepository: Repository<Usuarios>,
-  ) {}
+  ) { }
 
   async findAll(): Promise<Array<IUsuario>> {
     return this.usuarioRepository.find();
   }
 
   async criarUsuario(req, usuario): Promise<IUsuario> {
+
     const usuarioJaCadastrado = await this.consultarUsuarioPorChaveValor(
       'email',
       usuario.email,
     );
+
+
     if (usuarioJaCadastrado) {
       throw new BadRequestException('Já existe um usuário com esse email');
     }
@@ -30,6 +33,7 @@ export class UsuarioService {
       senha: btoa(usuario.senha),
     };
     return this.usuarioRepository.save(usuario);
+
   }
 
   public async consultarUsuarioPorChaveValor(

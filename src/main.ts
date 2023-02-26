@@ -5,9 +5,9 @@ var cors = require('cors');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
-  const whitelist = ['http://localhost:5501'];
+  const whitelist = ['http://localhost:5500', 'http://localhost:5502'];
   app.enableCors({
-    origin: 'http://localhost:5500',
+    origin: whitelist,
     allowedHeaders: '*',
     methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS',
     credentials: true,

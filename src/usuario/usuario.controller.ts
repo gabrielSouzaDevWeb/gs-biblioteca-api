@@ -14,7 +14,7 @@ import {
 
 @Controller('usuario')
 export class UsuariosController {
-  constructor(private usuariosService: UsuarioService) {}
+  constructor(private usuariosService: UsuarioService) { }
 
   @Get()
   async pegarTodosOsRegistros(@Req() req, @Res() res) {
@@ -37,16 +37,18 @@ export class UsuariosController {
   async criarUsuario(
     @Req() req,
     @Res() res: any,
-    @Body() criarUsuarioDto: CriarUsuarioDto,
+    @Body() body: CriarUsuarioDto,
   ): Promise<any> {
+
     return this.usuariosService
-      .criarUsuario(req, criarUsuarioDto)
+      .criarUsuario(req, body)
       .then((data) => {
         return res
           .status(HttpStatus.CREATED)
           .json({ message: 'registro criado com sucesso!', data });
       })
       .catch((err) => {
+
         throw new BadRequestException({
           message: 'Erro ao cadastrar usuario',
           error: err,

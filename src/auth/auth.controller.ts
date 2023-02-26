@@ -13,7 +13,7 @@ import {
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
@@ -24,13 +24,10 @@ export class AuthController {
         //to-do: implement cookie
         res.status(HttpStatus.OK).json({
           message: 'O usuário está autorizado a acessar o sistema',
-          // data: { access_token: data.access_token },
           data,
         });
 
-        // res
-        //   .status(HttpStatus.OK)
-        //   .cookie('SESSION_ID', data, { httpOnly: true, secure: true });
+
       })
       .catch((err) => {
         return res.status(HttpStatus.BAD_REQUEST);

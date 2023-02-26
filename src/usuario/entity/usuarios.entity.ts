@@ -21,6 +21,18 @@ export class Usuarios {
   @Column({ name: 'cargo' })
   cargo: string;
 
+  @Column({ name: 'biblioteca' })
+  biblioteca: string;
+
+  @Column({ name: 'estado' })
+  estado: string;
+
+  @Column({ name: 'municipio' })
+  municipio: string;
+
+  @Column({ name: 'uf' })
+  uf: string;
+
   @Column({ name: 'nivel_acesso' })
   nivelAcesso: number;
 
@@ -38,4 +50,7 @@ export class Usuarios {
 
   @UpdateDateColumn({ name: 'dt_alteracao' })
   dtAlteracao: Timestamp;
+
+  @UpdateDateColumn({ name: 'logado' })
+  logado: boolean;
 }

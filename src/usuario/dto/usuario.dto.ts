@@ -7,7 +7,20 @@ export class CriarUsuarioDto {
   nome: string;
 
   @IsNotEmpty()
+  @IsNumber()
   nivelAcesso: string;
+
+  @IsNotEmpty()
+  biblioteca: string;
+
+  @IsNotEmpty()
+  estado: string;
+
+  @IsNotEmpty()
+  uf: string;
+
+  @IsNotEmpty()
+  municipio: string;
 
   @IsNotEmpty()
   @IsNumber()
@@ -19,4 +32,7 @@ export class CriarUsuarioDto {
 
   @IsNotEmpty()
   senha: string;
+
+  @IsNotEmpty()
+  cargo: string;
 }
