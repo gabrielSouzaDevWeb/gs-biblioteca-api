@@ -25,10 +25,10 @@ export class createTbLivroLocado1678548915279 implements MigrationInterface {
           { name: 'livro_locado', type: 'int', isNullable: false },
           { name: 'aluno_locador', type: 'int', isNullable: false },
           { name: 'status_locacao', type: 'int', isNullable: false },
-          { name: 'data_locacao', type: 'timestamp', isNullable: false },
-          { name: 'data_renovacao', type: 'timestamp', isNullable: false },
-          { name: 'renovacoes', type: 'int', isNullable: false },
-          { name: 'data_vencimento', type: 'timestamp', isNullable: false },
+          { name: 'dt_locacao', type: 'timestamp', isNullable: false },
+          { name: 'dt_renovacao', type: 'timestamp', isNullable: false },
+          { name: 'renovacoes', type: 'int', isNullable: false }, //quantas vezes a locação foi renovada
+          { name: 'dt_vencimento', type: 'timestamp', isNullable: false },
 
           {
             name: 'dt_criacao',

@@ -1,8 +1,7 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class createTbAluno1678015249482 implements MigrationInterface {
-  private tableName: string = 'aluno';
-
+export class createTbContato1679779768449 implements MigrationInterface {
+  private tableName: string = 'contato';
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -43,20 +42,22 @@ export class createTbAluno1678015249482 implements MigrationInterface {
           { name: 'municipio', type: 'int', isNullable: false },
           { name: 'biblioteca', type: 'int', isNullable: false },
           { name: 'estado', type: 'int', isNullable: false },
-
-          { name: 'nome', type: 'varchar(255)', isNullable: false },
-          { name: 'matricula', type: 'varchar(255)', isNullable: true },
-          { name: 'sala', type: 'int', isNullable: true },
-          { name: 'endereco', type: 'int', isNullable: false },
-          { name: 'contato', type: 'int', isNullable: false },
-          { name: 'registro', type: 'int', isNullable: false },
-          { name: 'livro_locado', type: 'int', isNullable: false },
+          {
+            name: 'email',
+            type: 'varchar(255)',
+            isNullable: false,
+          },
+          {
+            name: 'tel',
+            type: 'varchar(20)',
+            isNullable: true,
+          },
+          { name: 'tel_responsavel', type: 'varchar(20)', isNullable: true },
+          { name: 'aluno', type: 'int', isNullable: false },
         ],
       }),
     );
   }
 
-  public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable(this.tableName);
-  }
+  public async down(queryRunner: QueryRunner): Promise<void> {}
 }

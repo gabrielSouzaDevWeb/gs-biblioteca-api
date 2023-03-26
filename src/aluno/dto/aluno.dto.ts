@@ -1,4 +1,6 @@
-import { IsNumber, IsNotEmpty } from '@nestjs/class-validator';
+import { IsNotEmpty, IsNumber } from '@nestjs/class-validator';
+import { EnderecoDTO } from 'src/endereco/dto/endereco.dto';
+import { ContatoDTO } from './../../contato/dto/contato.dto';
 
 // import { IsNotEmpty } from 'class-validator';
 
@@ -11,15 +13,15 @@ export class AlunoDto {
   matricula: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  sala: string;
-
-  @IsNotEmpty()
-  endereco: any; //enderecoDTO
-
-  @IsNotEmpty()
-  contato: any; //ContatoDTO
-
-  @IsNotEmpty()
   registro: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  sala: number;
+
+  @IsNotEmpty()
+  endereco: EnderecoDTO; //enderecoDTO
+
+  @IsNotEmpty()
+  contato: ContatoDTO; //ContatoDTO
 }
