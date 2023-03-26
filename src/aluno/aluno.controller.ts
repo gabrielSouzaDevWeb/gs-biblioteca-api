@@ -28,6 +28,7 @@ export class AlunoController {
 
   @Post()
   async PostAluno(@Body() aluno: AlunoDto, @Req() req, @Res() res) {
-    await this.service.postAluno(aluno, req);
+    // return res.status(200).json(aluno);
+    await this.service.criarAluno(aluno, req);
   }
 }

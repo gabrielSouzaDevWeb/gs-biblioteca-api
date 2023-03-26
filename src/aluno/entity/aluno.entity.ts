@@ -23,14 +23,14 @@ export class Aluno extends AbstractEntity {
   @Column({ name: 'registro' })
   registro: number;
 
-  @Column({ name: 'sala', type: 'int' })
-  @ManyToOne(() => Sala, (sala) => sala.idPrivado)
-  sala: Sala;
-
   @Column({ name: 'endereco', type: 'int' })
   @OneToOne(() => Endereco, (endereco) => endereco.idPrivado)
   @JoinColumn()
   endereco: Endereco;
+
+  @Column({ name: 'sala', type: 'int' })
+  @ManyToOne(() => Sala, (sala) => sala.idPrivado)
+  sala: Sala;
 
   // @Column({ name: 'contato' })
   @OneToOne(() => Contato, (contato) => contato.idPrivado)

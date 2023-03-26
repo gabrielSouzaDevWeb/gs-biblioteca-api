@@ -1,0 +1,24 @@
+v16.15.0
+
+http://localhost:3000/aluno
+
+{
+	"nome":"Gabriel",
+	"matricula":123456789,
+	"registro":"registroValido",
+	"sala":1,
+	"endereco":{
+		"rua":"Rua Paraná",
+		"numero":238,
+		"complemento":"Próximo a UBS-V",
+		"bairro":"centro",
+		"cidade":"Júripiranga",
+		"uf":"PB",
+		"cep":5833000
+	},
+	"contato":{
+		"emai":"example@gamil.com",
+		"tel":83987132784,
+		"telResponsavel":83988304147
+	}
+}

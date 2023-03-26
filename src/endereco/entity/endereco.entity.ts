@@ -1,4 +1,5 @@
-import { Column, Entity } from 'typeorm';
+import { Aluno } from 'src/aluno/entity/aluno.entity';
+import { Column, Entity, OneToOne } from 'typeorm';
 import { AbstractEntity } from './../../shared/abstract.entity';
 
 // import { IsNotEmpty } from 'class-validator';
@@ -25,4 +26,7 @@ export class Endereco extends AbstractEntity {
 
   @Column({ name: 'cep' })
   cep: string;
+
+  @OneToOne(() => Aluno, (aluno) => aluno.idPrivado)
+  aluno: Aluno;
 }

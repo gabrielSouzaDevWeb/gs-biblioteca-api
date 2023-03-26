@@ -1,11 +1,13 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import 'reflect-metadata';
+import { AppModule } from './app.module';
 var cors = require('cors');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
   const whitelist = ['http://localhost:5500', 'http://localhost:5502'];
+  app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
     origin: whitelist,
     allowedHeaders: '*',
