@@ -1,20 +1,19 @@
-import { IUsuario } from './interface/usuario.interface';
-import { CriarUsuarioDto } from './dto/usuario.dto';
-import { UsuarioService } from './usuario.service';
 import {
-  Controller,
-  Get,
-  Res,
-  Req,
-  HttpStatus,
-  Post,
   BadRequestException,
   Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
 } from '@nestjs/common';
+import { CriarUsuarioDto } from './dto/usuario.dto';
+import { UsuarioService } from './usuario.service';
 
 @Controller('usuario')
 export class UsuariosController {
-  constructor(private usuariosService: UsuarioService) { }
+  constructor(private usuariosService: UsuarioService) {}
 
   @Get()
   async pegarTodosOsRegistros(@Req() req, @Res() res) {
@@ -39,7 +38,7 @@ export class UsuariosController {
     @Res() res: any,
     @Body() body: CriarUsuarioDto,
   ): Promise<any> {
-
+    console.log(body);
     return this.usuariosService
       .criarUsuario(req, body)
       .then((data) => {
@@ -48,7 +47,6 @@ export class UsuariosController {
           .json({ message: 'registro criado com sucesso!', data });
       })
       .catch((err) => {
-
         throw new BadRequestException({
           message: 'Erro ao cadastrar usuario',
           error: err,

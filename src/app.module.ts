@@ -1,5 +1,4 @@
 import { SalaModule } from './sala/sala.module';
-import { EnderecoModule } from './endereco/endereco.module';
 import { LivroLocadoModule } from './livro_locado/livro-locado.module';
 import { LivroModule } from './livro/livro.module';
 import { AuthModule } from './auth/auth.module';
@@ -20,7 +19,6 @@ import { AlunoModule } from './aluno/aluno.module';
     AlunoModule,
     LivroModule,
     LivroLocadoModule,
-    EnderecoModule,
     SalaModule,
   ],
   controllers: [AppController],

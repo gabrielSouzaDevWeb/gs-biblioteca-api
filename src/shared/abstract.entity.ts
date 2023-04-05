@@ -1,11 +1,11 @@
 import {
-  Entity,
   Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
   PrimaryGeneratedColumn,
   Timestamp,
-  CreateDateColumn,
   UpdateDateColumn,
-  DeleteDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -14,16 +14,7 @@ export class AbstractEntity {
   idPrivado: number;
 
   @Column({ name: 'id_publico' })
-  idPublico: number;
-
-  @Column({ name: 'municipio' })
-  municipio: number;
-
-  @Column({ name: 'biblioteca' })
-  biblioteca: number;
-
-  @Column({ name: 'estado' })
-  estado: number;
+  idPublico: string;
 
   @CreateDateColumn({ name: 'dt_criacao' })
   dtCriacao: Timestamp;
