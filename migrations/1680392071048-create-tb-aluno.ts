@@ -24,7 +24,7 @@ export class createTbAluno1680392071048 implements MigrationInterface {
           { name: 'nome', type: 'varchar(255)', isNullable: false },
           {
             name: 'matricula',
-            type: 'int',
+            type: 'varchar(255)',
             isNullable: true,
             isUnique: true,
           },

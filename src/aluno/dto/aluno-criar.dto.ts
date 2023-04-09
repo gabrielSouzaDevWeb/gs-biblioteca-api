@@ -48,12 +48,12 @@ export class CriarAlunoDto {
   email: string;
 
   @IsNotEmpty()
-  @IsNumber()
+  // @IsNumber()
   @IsString()
   tel: string;
 
   @IsNotEmpty()
-  @IsNumber()
+  // @IsNumber()
   @IsString()
   telResponsavel: string;
 }

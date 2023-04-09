@@ -24,9 +24,13 @@ export class AlunoService {
       'estado',
       'registro',
     ];
+    const ignore = ['skip', 'all', 'take']; //todo:paginação
     const alunos = await this.alunoRepository.createQueryBuilder('aluno');
     alunos.where(`aluno.dt_deletado is null`);
     for (const key in query) {
+      if (ignore.includes(key)) {
+        continue;
+      }
       if (camposConsultadosComILike.includes(key)) {
         alunos.andWhere(`aluno.${key} ilike '%${query[key]}%'`);
         continue;
@@ -43,8 +47,20 @@ export class AlunoService {
         'Já existe aluno cadastrado com essa matricula ou com esse registro',
       );
     }
-    const alunoCriado: IAluno = await this.alunoRepository.save(aluno);
-    this.adicionarIdPublico(alunoCriado);
+    let alunoCriado: IAluno;
+    await this.alunoRepository
+      .save(aluno)
+      .then((aluno) => {
+        console.log(aluno, 'bom', 49);
+        alunoCriado = aluno;
+        this.adicionarIdPublico(aluno);
+      })
+      .catch((err) => {
+        console.log(err, 'ruim', 53);
+
+        throw new BadRequestException(err);
+      });
+
     return alunoCriado;
   }
 
@@ -75,7 +91,7 @@ export class AlunoService {
 
     const matriculaAlunoEncontrado: IAluno =
       await this.consultarAlunoPorChaveValor('registro', aluno.registro);
-    return !!registroAlunoEncontrado && !!matriculaAlunoEncontrado;
+    return !!registroAlunoEncontrado || !!matriculaAlunoEncontrado;
   }
 
   public async consultarAlunoPorChaveValor(
