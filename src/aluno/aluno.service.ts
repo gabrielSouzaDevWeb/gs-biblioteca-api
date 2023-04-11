@@ -16,25 +16,27 @@ export class AlunoService {
   async consultarAluno(query: {
     [key: string]: string | number;
   }): Promise<{ result: Array<IAluno>; count: number }> {
-    const camposConsultadosComILike: string[] = [
-      'nome',
-      'email',
-      'cidade',
-      'complemento',
-      'estado',
-      'registro',
-    ];
-    const ignore = ['page', 'all', 'take'];
-    const alunos = await this.alunoRepository.createQueryBuilder('aluno');
-    alunos.where(`aluno.dt_deletado is null`);
     try {
+      const camposConsultadosComILike: string[] = [
+        'nome',
+        'email',
+        'cidade',
+        'complemento',
+        'estado',
+        'registro',
+      ];
+      const paginacao = ['page', 'all', 'take'];
+      const alunos = await this.alunoRepository.createQueryBuilder('aluno');
+      alunos.where(`aluno.dt_deletado is null`);
+
       for (const key in query) {
         if (camposConsultadosComILike.includes(key)) {
           alunos.andWhere(`aluno.${key} ilike '%${query[key]}%'`);
           continue;
         }
-        if (ignore.includes(key)) {
+        if (paginacao.includes(key)) {
           const paginationOptions = {
+            //TODO implementar regra do all ou remover
             [`page`]: alunos.skip(
               Number(
                 ((Number(query['page']) as number) - 1) *
@@ -48,12 +50,12 @@ export class AlunoService {
         }
         alunos.andWhere(`aluno.${key} = ${query[key]}`);
       }
+      const result = await alunos.getMany();
+      const count = await alunos.getCount();
+      return { result, count };
     } catch (error) {
-      console.error(error);
+      throw new Error(error);
     }
-    const result = await alunos.getMany();
-    const count = await alunos.getCount();
-    return { result, count };
   }
 
   async criarAluno(aluno: CriarAlunoDto | any, req): Promise<IAluno> {
