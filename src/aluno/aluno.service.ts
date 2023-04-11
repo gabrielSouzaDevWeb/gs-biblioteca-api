@@ -15,7 +15,7 @@ export class AlunoService {
   ) {}
   async consultarAluno(query: {
     [key: string]: string | number;
-  }): Promise<Array<IAluno>> {
+  }): Promise<{ result: Array<IAluno>; count: number }> {
     const camposConsultadosComILike: string[] = [
       'nome',
       'email',
@@ -24,20 +24,36 @@ export class AlunoService {
       'estado',
       'registro',
     ];
-    const ignore = ['skip', 'all', 'take']; //todo:paginação
+    const ignore = ['page', 'all', 'take'];
     const alunos = await this.alunoRepository.createQueryBuilder('aluno');
     alunos.where(`aluno.dt_deletado is null`);
-    for (const key in query) {
-      if (ignore.includes(key)) {
-        continue;
+    try {
+      for (const key in query) {
+        if (camposConsultadosComILike.includes(key)) {
+          alunos.andWhere(`aluno.${key} ilike '%${query[key]}%'`);
+          continue;
+        }
+        if (ignore.includes(key)) {
+          const paginationOptions = {
+            [`page`]: alunos.skip(
+              Number(
+                ((Number(query['page']) as number) - 1) *
+                  Number(query['take'] as number),
+              ) as number,
+            ),
+            [`take`]: alunos.take(Number(query['take'])),
+          };
+          paginationOptions[key];
+          continue;
+        }
+        alunos.andWhere(`aluno.${key} = ${query[key]}`);
       }
-      if (camposConsultadosComILike.includes(key)) {
-        alunos.andWhere(`aluno.${key} ilike '%${query[key]}%'`);
-        continue;
-      }
-      alunos.andWhere(`aluno.${key} = ${query[key]}`);
+    } catch (error) {
+      console.error(error);
     }
-    return alunos.getMany();
+    const result = await alunos.getMany();
+    const count = await alunos.getCount();
+    return { result, count };
   }
 
   async criarAluno(aluno: CriarAlunoDto | any, req): Promise<IAluno> {
@@ -51,13 +67,10 @@ export class AlunoService {
     await this.alunoRepository
       .save(aluno)
       .then((aluno) => {
-        console.log(aluno, 'bom', 49);
         alunoCriado = aluno;
         this.adicionarIdPublico(aluno);
       })
       .catch((err) => {
-        console.log(err, 'ruim', 53);
-
         throw new BadRequestException(err);
       });
 

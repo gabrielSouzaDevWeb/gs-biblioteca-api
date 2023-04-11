@@ -38,7 +38,6 @@ export class UsuariosController {
     @Res() res: any,
     @Body() body: CriarUsuarioDto,
   ): Promise<any> {
-    console.log(body);
     return this.usuariosService
       .criarUsuario(req, body)
       .then((data) => {
