@@ -3,22 +3,18 @@ v16.15.0
 http://localhost:3000/aluno
 
 {
-	"nome":"Gabriel",
-	"matricula":123456789,
-	"registro":"registroValido",
-	"sala":1,
-	"endereco":{
-		"rua":"Rua Paraná",
-		"numero":238,
-		"complemento":"Próximo a UBS-V",
-		"bairro":"centro",
-		"cidade":"Júripiranga",
-		"uf":"PB",
-		"cep":5833000
-	},
-	"contato":{
-		"emai":"example@gamil.com",
-		"tel":83987132784,
-		"telResponsavel":83988304147
-	}
+	"nome": "Souza",
+	"matricula": 98,
+	"registro": "98",
+	"sala": 1,
+	"rua": "Rua Paraná",
+	"numero": 238,
+	"complemento": "Próximo a UBS-V",
+	"bairro": "centro",
+	"cidade": "Júripiranga",
+	"estado": "Praíba",
+	"cep": 5833000,
+	"email": "example@gamil.com",
+	"tel": "3987132784",
+	"telResponsavel": "83988304147"
 }
