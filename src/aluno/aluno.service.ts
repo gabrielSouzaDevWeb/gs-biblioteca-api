@@ -24,10 +24,10 @@ export class AlunoService {
         'complemento',
         'estado',
         'registro',
+        'idPublico',
       ];
       const paginacao = ['page', 'all', 'take'];
       const alunos = await this.alunoRepository.createQueryBuilder('aluno');
-      alunos.where(`aluno.dt_deletado is null`);
 
       for (const key in query) {
         if (camposConsultadosComILike.includes(key)) {
