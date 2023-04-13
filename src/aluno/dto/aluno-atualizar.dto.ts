@@ -10,8 +10,8 @@ export class AtualizarAlunoDto {
   @IsNumber()
   idPrivado: number;
 
-  @IsString()
-  idPublico: string;
+  @IsNotEmpty()
+  idPublico: string | number;
 
   @IsNotEmpty()
   dtCriacao: Timestamp;
@@ -27,8 +27,8 @@ export class AtualizarAlunoDto {
   nome: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  matricula: number;
+  @IsString()
+  matricula: string;
 
   @IsString()
   @IsNotEmpty()
@@ -43,8 +43,8 @@ export class AtualizarAlunoDto {
   rua: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  numero: number;
+  @IsString()
+  numero: string;
 
   @IsString()
   complemento: string;
@@ -59,12 +59,12 @@ export class AtualizarAlunoDto {
 
   @IsNotEmpty()
   @IsString()
-  estado: string;
+  uf: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  // @IsString()
-  cep: number;
+  // @IsNumber()
+  @IsString()
+  cep: string;
 
   @IsNotEmpty()
   @IsString()

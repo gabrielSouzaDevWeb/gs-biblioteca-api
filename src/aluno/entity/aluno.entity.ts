@@ -7,7 +7,7 @@ export class Aluno extends AbstractEntity {
   nome: string;
 
   @Column({ name: 'matricula' })
-  matricula: number;
+  matricula: string;
 
   @Column({ name: 'registro' })
   registro: string;
@@ -31,7 +31,7 @@ export class Aluno extends AbstractEntity {
   rua: string;
 
   @Column({ name: 'numero' })
-  numero: number;
+  numero: string;
 
   @Column({ name: 'complemento' })
   complemento: string;
@@ -42,9 +42,9 @@ export class Aluno extends AbstractEntity {
   @Column({ name: 'cidade' })
   cidade: string;
 
-  @Column({ name: 'estado' })
-  estado: string;
+  @Column({ name: 'uf' })
+  uf: string;
 
   @Column({ name: 'cep' })
-  cep: number;
+  cep: string;
 }

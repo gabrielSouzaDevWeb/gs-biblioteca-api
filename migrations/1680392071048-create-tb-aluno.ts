@@ -45,7 +45,7 @@ export class createTbAluno1680392071048 implements MigrationInterface {
           },
           {
             name: 'numero',
-            type: 'int',
+            type: 'varchar(8)',
             isNullable: false,
           },
           {
@@ -64,13 +64,13 @@ export class createTbAluno1680392071048 implements MigrationInterface {
             isNullable: false,
           },
           {
-            name: 'estado',
-            type: 'varchar(255)',
+            name: 'uf',
+            type: 'varchar(2)',
             isNullable: false,
           },
           {
             name: 'cep',
-            type: 'int',
+            type: 'varchar(8)',
             isNullable: false,
           },
           {
