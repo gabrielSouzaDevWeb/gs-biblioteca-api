@@ -9,7 +9,7 @@ export class CriarAlunoDto {
   nome: string;
 
   @IsNotEmpty()
-  @IsNumber()
+  @IsString()
   matricula: number;
 
   @IsString()
@@ -38,10 +38,10 @@ export class CriarAlunoDto {
   cidade: string;
 
   @IsNotEmpty()
-  estado: string;
+  uf: string;
 
   @IsNotEmpty()
-  @IsNumber()
+  @IsString()
   cep: number;
 
   @IsNotEmpty()
