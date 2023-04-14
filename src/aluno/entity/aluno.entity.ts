@@ -31,7 +31,7 @@ export class Aluno extends AbstractEntity {
   rua: string;
 
   @Column({ name: 'numero' })
-  numero: string;
+  numero: number;
 
   @Column({ name: 'complemento' })
   complemento: string;

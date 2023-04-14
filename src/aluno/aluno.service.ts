@@ -58,7 +58,7 @@ export class AlunoService {
     }
   }
 
-  async criarAluno(aluno: CriarAlunoDto | any, req): Promise<IAluno> {
+  async criarAluno(aluno: CriarAlunoDto | IAluno | any, req): Promise<IAluno> {
     const alunoExiste: boolean = await this.verificarAlunoCriarExiste(aluno);
     if (alunoExiste) {
       throw new BadRequestException(

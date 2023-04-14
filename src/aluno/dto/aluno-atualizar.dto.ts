@@ -43,8 +43,8 @@ export class AtualizarAlunoDto {
   rua: string;
 
   @IsNotEmpty()
-  @IsString()
-  numero: string;
+  @IsNumber()
+  numero: number;
 
   @IsString()
   complemento: string;

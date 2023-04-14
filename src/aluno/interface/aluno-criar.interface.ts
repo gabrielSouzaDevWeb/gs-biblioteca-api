@@ -1,13 +1,13 @@
 import { Timestamp } from 'typeorm';
 export interface IAluno {
-  idPrivado: number;
+  idPrivado?: number;
   idPublico?: string;
   nome: string;
-  matricula: string;
+  matricula?: string;
   registro?: string;
   sala: number;
   rua: string;
-  numero: string;
+  numero: number;
   complemento: string;
   bairro: string;
   cidade: string;
@@ -17,6 +17,6 @@ export interface IAluno {
   tel: string;
   telResponsavel: string;
   dtAlteracao?: Timestamp;
-  dtCriacao: Timestamp;
+  dtCriacao?: Timestamp;
   dtDeletado?: Timestamp;
 }

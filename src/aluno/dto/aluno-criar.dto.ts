@@ -10,7 +10,7 @@ export class CriarAlunoDto {
 
   @IsNotEmpty()
   @IsString()
-  matricula: number;
+  matricula: string;
 
   @IsString()
   @IsNotEmpty()
@@ -42,7 +42,7 @@ export class CriarAlunoDto {
 
   @IsNotEmpty()
   @IsString()
-  cep: number;
+  cep: string;
 
   @IsNotEmpty()
   email: string;
