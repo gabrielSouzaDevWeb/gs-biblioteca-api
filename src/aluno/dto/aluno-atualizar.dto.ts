@@ -1,7 +1,6 @@
 // import { IsNotEmpty, IsNumber } from '@nestjs/class-validator';
 import { IsEmpty, IsOptional } from '@nestjs/class-validator';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { Timestamp } from 'typeorm';
 
 // import { IsNotEmpty } from 'class-validator';
 
@@ -14,13 +13,13 @@ export class AtualizarAlunoDto {
   idPublico: string | number;
 
   @IsNotEmpty()
-  dtCriacao: Timestamp;
+  dtCriacao: string;
 
   @IsOptional()
-  dtAlteracao: Timestamp;
+  dtAlteracao: string;
 
   @IsEmpty()
-  dtDeletado: Timestamp;
+  dtDeletado: string;
 
   @IsString()
   @IsNotEmpty()
