@@ -38,9 +38,9 @@ export class createTbLivro1678544145136 implements MigrationInterface {
             type: 'timestamp',
             isNullable: true,
           },
-          { name: 'municipio', type: 'int', isNullable: false },
-          { name: 'biblioteca', type: 'int', isNullable: false },
-          { name: 'estado', type: 'int', isNullable: false },
+          // { name: 'municipio', type: 'int', isNullable: false },
+          // { name: 'biblioteca', type: 'int', isNullable: false },
+          // { name: 'estado', type: 'int', isNullable: false },
 
           { name: 'nom_livro', type: 'varchar(255)', isNullable: false },
           { name: 'nom_autor', type: 'varchar(255)', isNullable: false },
