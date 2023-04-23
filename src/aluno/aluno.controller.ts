@@ -72,20 +72,22 @@ export class AlunoController {
 
   @Get('detalhe')
   async pegarDetalhe(@Res() res, @Req() req) {
-    return res.status(HttpStatus.OK).json({
-      message: 'Consulta realizada com sucesso!',
-      data: {
-        idPrivado: 1,
-        idPublico: '1',
-        nomLivro: '12 Regras para a vida',
-        nomAutor: 'Jordan B. Peterson',
-        categoria: 'Auto ajuda',
-        estante: 'suspense',
-        prateleira: '3',
-        paginas: 7,
-        unidades: 1,
-      },
-    });
+    setTimeout(() => {
+      return res.status(HttpStatus.OK).json({
+        message: 'Consulta realizada com sucesso!',
+        data: {
+          idPrivado: 1,
+          idPublico: '1',
+          nomLivro: '12 Regras para a vida',
+          nomAutor: 'Jordan B. Peterson',
+          categoria: 'Auto ajuda',
+          estante: 'suspense',
+          prateleira: '3',
+          paginas: 7,
+          unidades: 1,
+        },
+      });
+    }, 1000);
   }
 
   @Put('atualizar/:idPrivado')
