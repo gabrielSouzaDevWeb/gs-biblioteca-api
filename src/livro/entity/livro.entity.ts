@@ -1,6 +1,5 @@
 import { AbstractEntity } from 'src/shared/abstract.entity';
-import { Column, Entity, OneToMany } from 'typeorm';
-import { LivroLocado } from '../../livro_locado/entity/livro-locado.entity';
+import { Column, Entity } from 'typeorm';
 
 @Entity({ name: 'livro', orderBy: { dtCriacao: 'DESC' } })
 export class Livro extends AbstractEntity {
@@ -19,12 +18,18 @@ export class Livro extends AbstractEntity {
   @Column({ name: 'prateleira' })
   prateleira: string;
 
+  /*
+   * TODO: Garatir que a coluna será tratada como número para
+   * para fins de consulta e filtros
+   */
   @Column({ name: 'qntd_paginas' })
   qntdPaginas: number;
 
   @Column({ name: 'unidades' })
   unidades: number;
 
-  @OneToMany(() => LivroLocado, (livroLocado) => livroLocado.idPrivado)
-  locacoes: LivroLocado[];
+  //TODO: relaçãop com livro_locado
+
+  // @OneToMany(() => LivroLocado, (livroLocado) => livroLocado.idPrivado)
+  // locacoes: LivroLocado[];
 }
