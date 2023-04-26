@@ -1,4 +1,9 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from 'typeorm';
 
 export class createTbLivroLocado1678548915279 implements MigrationInterface {
   tableName: string = 'livro_locado';
@@ -25,32 +30,52 @@ export class createTbLivroLocado1678548915279 implements MigrationInterface {
           { name: 'livro_locado', type: 'int', isNullable: false },
           { name: 'aluno_locador', type: 'int', isNullable: false },
           { name: 'status_locacao', type: 'int', isNullable: false },
-          { name: 'dt_locacao', type: 'timestamp', isNullable: false },
-          { name: 'dt_renovacao', type: 'timestamp', isNullable: false },
+          { name: 'dt_locacao', type: 'varchar(255)', isNullable: false },
+          { name: 'dt_renovacao', type: 'varchar(255)', isNullable: false },
           { name: 'renovacoes', type: 'int', isNullable: false }, //quantas vezes a locação foi renovada
-          { name: 'dt_vencimento', type: 'timestamp', isNullable: false },
+          { name: 'dt_vencimento', type: 'varchar(255)', isNullable: false },
 
           {
             name: 'dt_criacao',
-            type: 'timestamp',
+            type: 'varchar(255)',
             default: 'now()',
             isNullable: true,
           },
           {
             name: 'dt_alteracao',
-            type: 'timestamp',
+            type: 'varchar(255)',
             onUpdate: 'now()',
             isNullable: true,
           },
           {
             name: 'dt_deletado',
-            type: 'timestamp',
+            type: 'varchar(255)',
             isNullable: true,
           },
           { name: 'municipio', type: 'int', isNullable: false },
           { name: 'biblioteca', type: 'int', isNullable: false },
           { name: 'estado', type: 'int', isNullable: false },
         ],
+      }),
+    );
+    await queryRunner.createForeignKey(
+      'livro_locado',
+      new TableForeignKey({
+        columnNames: ['aluno_locador'],
+        referencedColumnNames: ['id_privado'],
+        referencedTableName: 'aluno',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+      }),
+    );
+    await queryRunner.createForeignKey(
+      'livro_locado',
+      new TableForeignKey({
+        columnNames: ['livro_locado'],
+        referencedColumnNames: ['id_privado'],
+        referencedTableName: 'livro',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       }),
     );
   }

@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Inject } from '@nestjs/common/decorators';
 import { Repository } from 'typeorm';
+import { AtualizarLivroDto } from './dto/livro-atualizar.dto';
 import { CriarLivroDto } from './dto/livro-criar.dto';
 import { Livro } from './entity/livro.entity';
 import { ILivro } from './interface/livro.interface';
@@ -56,8 +57,8 @@ export class LivroService {
       throw new Error(error);
     }
   }
-  //TODO:  implementar o dto de atualizar livro
-  async atualizarLivro(id: number, livro: any) {
+
+  async atualizarLivro(id: number, livro: AtualizarLivroDto) {
     const { idPrivado, idPublico, ...livroAtualizar } = livro;
     try {
       return await this.livroRepository.update(id, livroAtualizar);
@@ -110,6 +111,7 @@ export class LivroService {
     }
     //TODO:estratégia para adicionar idpublico antes de criar o registro no banco
   }
+
   public async consultarLivroPorChaveValor(
     chave: string,
     valor: any,
@@ -117,5 +119,9 @@ export class LivroService {
     return (await this.livroRepository.findOneBy({
       [chave]: valor,
     })) as unknown as ILivro;
+  }
+
+  async deletar(idPrivado: number): Promise<void> {
+    await this.livroRepository.softDelete(idPrivado);
   }
 }

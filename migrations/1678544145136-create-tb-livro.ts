@@ -3,6 +3,7 @@ import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 export class createTbLivro1678544145136 implements MigrationInterface {
   tableName: string = 'livro';
   public async up(queryRunner: QueryRunner): Promise<void> {
+    //TODO: criar coluna unidades disponíveis
     await queryRunner.createTable(
       new Table({
         name: this.tableName,

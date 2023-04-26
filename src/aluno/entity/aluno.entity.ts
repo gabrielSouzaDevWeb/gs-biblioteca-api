@@ -1,5 +1,6 @@
+import { LivroLocado } from 'src/livro_locado/entity/livro-locado.entity';
 import { AbstractEntity } from 'src/shared/abstract.entity';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 
 @Entity({ name: 'aluno', orderBy: { dtCriacao: 'DESC' } })
 export class Aluno extends AbstractEntity {
@@ -47,4 +48,7 @@ export class Aluno extends AbstractEntity {
 
   @Column({ name: 'cep' })
   cep: string;
+
+  @OneToMany(() => LivroLocado, (livroLocado) => livroLocado.aluno)
+  livrosLocados: LivroLocado[];
 }

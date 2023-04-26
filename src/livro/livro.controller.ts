@@ -2,13 +2,17 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
+  Param,
   Post,
+  Put,
   Query,
   Req,
   Res,
 } from '@nestjs/common';
+import { AtualizarLivroDto } from './dto/livro-atualizar.dto';
 import { CriarLivroDto } from './dto/livro-criar.dto';
 import { ILivro } from './interface/livro.interface';
 import { LivroService } from './livro.service';
@@ -44,6 +48,39 @@ export class LivroController {
         res
           .status(HttpStatus.OK)
           .json({ message: 'Consulta realizada com sucesso!!', data: result });
+      })
+      .catch((err) => {
+        throw new BadRequestException(err);
+      });
+  }
+
+  @Put('atualizar/:idPrivado')
+  async atualizarAluno(
+    @Res() res,
+    @Req() req,
+    @Param('idPrivado') id: number,
+    @Body() aluno: AtualizarLivroDto,
+  ) {
+    await this.service
+      .atualizarLivro(id, aluno)
+      .then((result) => {
+        res
+          .status(HttpStatus.OK)
+          .json({ message: 'Livro atualizado com sucesso!!', data: result });
+      })
+      .catch((err) => {
+        throw new BadRequestException(err);
+      });
+  }
+
+  @Delete('deletar/:idPrivado')
+  async deletar(@Res() res, @Req() req, @Param('idPrivado') id: number) {
+    await this.service
+      .deletar(id)
+      .then((result) => {
+        res
+          .status(HttpStatus.OK)
+          .json({ message: 'livro deletado com sucesso!!', data: result });
       })
       .catch((err) => {
         throw new BadRequestException(err);

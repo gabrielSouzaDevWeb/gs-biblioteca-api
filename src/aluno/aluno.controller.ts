@@ -52,6 +52,16 @@ export class AlunoController {
       });
   }
 
+  @Post('aluno-alugar/:idPrivadoAluno/livro/:idPrivadoLivro')
+  async alunoAlugarlivro(
+    @Res() res,
+    @Req() req,
+    @Param('idPrivadoAluno') idPrivadoAluno: number,
+    @Param('idPrivadoLivro') idPrivadoLivro: number,
+  ) {
+    await this.service.alunoAlugarlivro(idPrivadoAluno, idPrivadoLivro);
+  }
+
   @Get()
   async consultarAluno(
     @Res() res,

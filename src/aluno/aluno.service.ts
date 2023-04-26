@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { LivroLocadoService } from './../livro_locado/livro-locado.service';
 
 import { Inject } from '@nestjs/common/decorators';
 import { Repository } from 'typeorm';
@@ -12,6 +13,7 @@ export class AlunoService {
   constructor(
     @Inject('ALUNO_REPOSITORY')
     private alunoRepository: Repository<Aluno>,
+    private livroLocadoService: LivroLocadoService,
   ) {}
   async consultarAluno(query: {
     [key: string]: string | number;
@@ -77,6 +79,16 @@ export class AlunoService {
       });
 
     return alunoCriado;
+  }
+
+  async alunoAlugarlivro(
+    idPrivadoAluno: number,
+    idPrivadoLivro: number,
+  ): Promise<any> {
+    return await this.livroLocadoService.alugarLivro(
+      idPrivadoAluno,
+      idPrivadoLivro,
+    );
   }
 
   async adicionarIdPublico(aluno: IAluno): Promise<void> {

@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { DatabaseModule } from 'src/database/database.module';
+import { LivroLocadoModule } from 'src/livro_locado/livro-locado.module';
 import { DataSource } from 'typeorm';
 import { AlunoController } from './aluno.controller';
 import { AlunoService } from './aluno.service';
@@ -13,7 +14,7 @@ const ALUNO_REPOSITORY = {
 
 @Module({
   controllers: [AlunoController],
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, LivroLocadoModule],
   providers: [ALUNO_REPOSITORY, AlunoService],
 })
 export class AlunoModule {}
