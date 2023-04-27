@@ -8,7 +8,7 @@ export const databaseProviders = new DataSource({
   username: 'postgres',
   password: 'postgres',
   database: 'gs-biblioteca-api',
-  logging: false,
+  logging: true,
   synchronize: false,
   // name: 'default',
   // entities: [__dirname + './../../domain/entity/**/*.entity{.ts,.js}'],

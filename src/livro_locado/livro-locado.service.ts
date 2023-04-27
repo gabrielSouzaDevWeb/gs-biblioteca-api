@@ -22,15 +22,26 @@ export class LivroLocadoService {
       const livro = await this.livroRepository.findOne({
         where: { idPrivado: idPrivadoLivro },
       });
+      /**
+       * TODO: verificar se o aluno existe.
+       * TODO: verificar quantos livros o aluno tem com o status aluguel ativo.
+       * TODO: verificar se o aluno já excedeu a quantidade máxima de livros locados.
+       * TODO: verificar se o aluno não possui nenhuma pendência.(livros com o aluguel vencido)
+       * TODO: verificar se o livro existe.
+       * TODO: verificar se o livro está disponivel em estoque
+       */
 
+      // TODO: melhorar essa parte do código
+      console.log({ aluno, livro });
       const livroLocado = new LivroLocado();
       livroLocado.aluno = aluno;
       livroLocado.livro = livro;
       livroLocado.statusLocacao = 1; // 1 = alugado
-      livroLocado.dtLocacao = new Date(new Date()).toDateString();
-      // livroLocado.dtRenovacao = null;
-      livroLocado.dtVencimento = new Date(new Date()).toDateString(); // 7 dias para devolução
-      // livroLocado.renovacao = 0;
+      livroLocado.livroLocado = livro.idPrivado;
+      livroLocado.alunoLocador = aluno.idPrivado;
+      livroLocado.dtLocacao = new Date();
+      livroLocado.dtVencimento = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 dias para devolução
+      livroLocado.renovacao = 0;
 
       const locacao = await this.livroLocadoRepository.save(livroLocado);
       console.log(locacao);
