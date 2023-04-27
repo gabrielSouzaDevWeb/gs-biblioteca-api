@@ -33,6 +33,7 @@ export class createTbLivro1678544145136 implements MigrationInterface {
           { name: 'prateleira', type: 'varchar(255)', isNullable: true },
           { name: 'qntd_paginas', type: 'varchar(4)', isNullable: false },
           { name: 'unidades', type: 'int', isNullable: false },
+          { name: 'unidades_alugados', type: 'int', isNullable: true },
 
           {
             name: 'dt_criacao',

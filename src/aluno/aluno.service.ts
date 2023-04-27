@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { LivroLocadoService } from './../livro_locado/livro-locado.service';
 
 import { Inject } from '@nestjs/common/decorators';
+import { ILivroLocado } from 'src/livro_locado/interface/livro-locado.interface';
 import { Repository } from 'typeorm';
 import { AtualizarAlunoDto } from './dto/aluno-atualizar.dto';
 import { CriarAlunoDto } from './dto/aluno-criar.dto';
@@ -88,6 +89,16 @@ export class AlunoService {
     return await this.livroLocadoService.alugarLivro(
       idPrivadoAluno,
       idPrivadoLivro,
+    );
+  }
+
+  async livrosAlugados(
+    req,
+    query: { [key: string]: number },
+  ): Promise<ILivroLocado[]> {
+    const { idPrivado } = query;
+    return await this.livroLocadoService.getLivrosAlugadosPorIdPrivadoAluno(
+      idPrivado,
     );
   }
 

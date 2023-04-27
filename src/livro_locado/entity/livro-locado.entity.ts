@@ -1,7 +1,13 @@
 import { Aluno } from 'src/aluno/entity/aluno.entity';
 import { Livro } from 'src/livro/entity/livro.entity';
 import { AbstractEntity } from 'src/shared/abstract.entity';
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+} from 'typeorm';
 
 @Entity({ name: 'livro_locado', orderBy: { dtCriacao: 'DESC' } })
 export class LivroLocado extends AbstractEntity {
@@ -21,15 +27,15 @@ export class LivroLocado extends AbstractEntity {
   renovacao: number;
 
   @ManyToOne(() => Aluno, (aluno) => aluno.livrosLocados)
-  @JoinColumn({ name: 'id_privado' })
+  @JoinColumn({ name: 'aluno_locador' })
   aluno: Aluno;
 
   @ManyToOne(() => Livro, (livro) => livro.locacoes)
-  @JoinColumn({ name: 'id_privado' })
+  @JoinColumn({ name: 'livro_locado' })
   livro: Livro;
 
   @Column({ name: 'livro_locado' })
-  livroLocado: number;
+  livroLocado: number; //
   @Column({ name: 'aluno_locador' })
   alunoLocador: number;
 }

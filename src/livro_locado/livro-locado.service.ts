@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { BadGatewayException, Injectable } from '@nestjs/common';
 import { Inject } from '@nestjs/common/decorators';
 import { Aluno } from 'src/aluno/entity/aluno.entity';
 import { Livro } from 'src/livro/entity/livro.entity';
+import { LIVRO_LOCADO_STATUS } from 'src/shared/enum/livro-locado.enum';
 import { Repository } from 'typeorm';
 import { LivroLocado } from './entity/livro-locado.entity';
+import { ILivroLocado } from './interface/livro-locado.interface';
 
 @Injectable()
 export class LivroLocadoService {
@@ -14,7 +16,19 @@ export class LivroLocadoService {
     private livroLocadoRepository: Repository<LivroLocado>,
   ) {}
 
-  async alugarLivro(idPrivadoAluno: number, idPrivadoLivro: number) {
+  async getLivrosAlugadosPorIdPrivadoAluno(
+    idPrivado: number,
+  ): Promise<ILivroLocado[]> {
+    return await this.livroLocadoRepository.find({
+      where: { alunoLocador: idPrivado },
+      relations: ['livro'],
+    });
+  }
+
+  async alugarLivro(
+    idPrivadoAluno: number,
+    idPrivadoLivro: number,
+  ): Promise<ILivroLocado> {
     try {
       const aluno = await this.alunoRepository.findOne({
         where: { idPrivado: idPrivadoAluno },
@@ -22,8 +36,22 @@ export class LivroLocadoService {
       const livro = await this.livroRepository.findOne({
         where: { idPrivado: idPrivadoLivro },
       });
+
+      if (!aluno) {
+        throw new BadGatewayException('Aluno não encontrado!');
+      }
+      if (!livro) {
+        throw new BadGatewayException('Livro não encontrado!');
+      }
+
+      if (livro.unidades === livro.unidadesAlugados) {
+        throw new BadGatewayException(
+          'Não há unidades desse livro disponível no momento.',
+        );
+      }
+
       /**
-       * TODO: verificar se o aluno existe.
+      
        * TODO: verificar quantos livros o aluno tem com o status aluguel ativo.
        * TODO: verificar se o aluno já excedeu a quantidade máxima de livros locados.
        * TODO: verificar se o aluno não possui nenhuma pendência.(livros com o aluguel vencido)
@@ -32,22 +60,22 @@ export class LivroLocadoService {
        */
 
       // TODO: melhorar essa parte do código
-      console.log({ aluno, livro });
-      const livroLocado = new LivroLocado();
-      livroLocado.aluno = aluno;
-      livroLocado.livro = livro;
-      livroLocado.statusLocacao = 1; // 1 = alugado
-      livroLocado.livroLocado = livro.idPrivado;
-      livroLocado.alunoLocador = aluno.idPrivado;
-      livroLocado.dtLocacao = new Date();
-      livroLocado.dtVencimento = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 dias para devolução
-      livroLocado.renovacao = 0;
+      const livroLocado: ILivroLocado = {
+        aluno: aluno,
+        livro: livro,
+        statusLocacao: LIVRO_LOCADO_STATUS.LOCADO, // 1 : alugado
+        livroLocado: livro.idPrivado,
+        alunoLocador: aluno.idPrivado,
+        dtLocacao: new Date(),
+        dtVencimento: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 dias para devolução
+        renovacao: 0,
+      };
 
       const locacao = await this.livroLocadoRepository.save(livroLocado);
-      console.log(locacao);
+
       return locacao;
     } catch (error) {
-      console.log(error);
+      throw new BadGatewayException(error);
     }
   }
 }

@@ -1,6 +1,6 @@
 import { LivroLocado } from 'src/livro_locado/entity/livro-locado.entity';
 import { AbstractEntity } from 'src/shared/abstract.entity';
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany } from 'typeorm';
 
 @Entity({ name: 'livro', orderBy: { dtCriacao: 'DESC' } })
 export class Livro extends AbstractEntity {
@@ -28,9 +28,12 @@ export class Livro extends AbstractEntity {
 
   @Column({ name: 'unidades' })
   unidades: number;
+  @Column({ name: 'unidades_alugados' })
+  unidadesAlugados: number;
 
   //TODO: relaçãop com livro_locado
 
   @OneToMany(() => LivroLocado, (livroLocado) => livroLocado.livro)
+  @JoinColumn({ name: 'id_privado' })
   locacoes: LivroLocado[];
 }
