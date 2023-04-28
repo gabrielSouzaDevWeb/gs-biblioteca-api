@@ -1,27 +1,10 @@
 // import { IsNotEmpty, IsNumber } from '@nestjs/class-validator';
-import { IsEmpty, IsOptional } from '@nestjs/class-validator';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { Timestamp } from 'typeorm';
+import { AtualizarDTO } from 'src/shared/abstract.dto';
 
 // import { IsNotEmpty } from 'class-validator';
 
-export class AtualizarAlunoDto {
-  @IsNotEmpty()
-  @IsNumber()
-  idPrivado: number;
-
-  @IsNotEmpty()
-  idPublico: string | number;
-
-  @IsNotEmpty()
-  dtCriacao: Timestamp;
-
-  @IsOptional()
-  dtAlteracao: Timestamp;
-
-  @IsEmpty()
-  dtDeletado: Timestamp;
-
+export class AtualizarAlunoDto extends AtualizarDTO {
   @IsString()
   @IsNotEmpty()
   nome: string;
@@ -43,8 +26,8 @@ export class AtualizarAlunoDto {
   rua: string;
 
   @IsNotEmpty()
-  @IsString()
-  numero: string;
+  @IsNumber()
+  numero: number;
 
   @IsString()
   complemento: string;

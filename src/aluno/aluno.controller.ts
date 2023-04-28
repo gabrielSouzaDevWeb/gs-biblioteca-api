@@ -52,6 +52,25 @@ export class AlunoController {
       });
   }
 
+  @Post('aluno-alugar/:idPrivadoAluno/livro/:idPrivadoLivro')
+  async alunoAlugarlivro(
+    @Res() res,
+    @Req() req,
+    @Param('idPrivadoAluno') idPrivadoAluno: number,
+    @Param('idPrivadoLivro') idPrivadoLivro: number,
+  ) {
+    await this.service
+      .alunoAlugarlivro(idPrivadoAluno, idPrivadoLivro)
+      .then((result) => {
+        res
+          .status(HttpStatus.OK)
+          .json({ message: 'Aluguel registrado com sucesso!!', data: result });
+      })
+      .catch((err) => {
+        throw new BadRequestException(err);
+      });
+  }
+
   @Get()
   async consultarAluno(
     @Res() res,
@@ -68,6 +87,36 @@ export class AlunoController {
       .catch((err) => {
         throw new BadRequestException(err);
       });
+  }
+
+  @Get('detalhe')
+  async pegarDetalhe(@Res() res, @Req() req, @Query() query) {
+    this.service
+      .livrosAlugados(req, query)
+      .then((result) => {
+        res
+          .status(HttpStatus.OK)
+          .json({ message: 'Consulta realizada com sucesso!!', data: result });
+      })
+      .catch((err) => {
+        throw new BadRequestException(err);
+      });
+    // setTimeout(() => {
+    //   return res.status(HttpStatus.OK).json({
+    //     message: 'Consulta realizada com sucesso!',
+    //     data: {
+    //       idPrivado: 1,
+    //       idPublico: '1',
+    //       nomLivro: '12 Regras para a vida',
+    //       nomAutor: 'Jordan B. Peterson',
+    //       categoria: 'Auto ajuda',
+    //       estante: 'suspense',
+    //       prateleira: '3',
+    //       paginas: 7,
+    //       unidades: 1,
+    //     },
+    //   });
+    // }, 1000);
   }
 
   @Put('atualizar/:idPrivado')
