@@ -123,7 +123,7 @@ export class AlunoService {
     }
   }
 
-  async verificarAlunoCriarExiste(aluno: IAluno): Promise<boolean> {
+  async verificarAlunoCriarExiste(aluno: CriarAlunoDto): Promise<boolean> {
     const registroAlunoEncontrado: IAluno =
       await this.consultarAlunoPorChaveValor('matricula', aluno.matricula);
 
