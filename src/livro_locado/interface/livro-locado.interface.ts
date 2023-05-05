@@ -9,10 +9,14 @@ export interface ILivroLocado {
   dtVencimento: Timestamp | Date;
   renovacao: number;
   aluno: IAluno;
-  livro: ILivro;
+  livro?: ILivro;
   livroLocado: number;
   alunoLocador: number;
   dtAlteracao?: Timestamp | Date;
   dtCriacao?: Timestamp | Date;
   dtDeletado?: Timestamp | Date;
+  nomLivros?: string;
+  categoria?: string;
+  nomAutor?: string;
+  idPrivadoLivro?: number;
 }

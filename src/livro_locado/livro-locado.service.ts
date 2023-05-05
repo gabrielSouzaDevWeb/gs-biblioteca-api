@@ -19,10 +19,21 @@ export class LivroLocadoService {
   async getLivrosAlugadosPorIdPrivadoAluno(
     idPrivado: number,
   ): Promise<ILivroLocado[]> {
-    return await this.livroLocadoRepository.find({
+    const livrosAlugados = await this.livroLocadoRepository.find({
       where: { alunoLocador: idPrivado },
       relations: ['livro'],
     });
+    const livroLocadoMaped = livrosAlugados.map((livrosAlugado) => {
+      const { livro, ...alugado } = livrosAlugado;
+      return {
+        ...alugado,
+        nomLivro: livro.nomLivro,
+        categoria: livro.categoria,
+        nomAutor: livro.nomAutor,
+      };
+    });
+
+    return livroLocadoMaped;
   }
 
   async alugarLivro(
