@@ -1,9 +1,4 @@
-import {
-  MigrationInterface,
-  QueryRunner,
-  Table,
-  TableForeignKey,
-} from 'typeorm';
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class createTbLivroLocado1678548915279 implements MigrationInterface {
   tableName: string = 'livro_locado';
@@ -52,26 +47,6 @@ export class createTbLivroLocado1678548915279 implements MigrationInterface {
             isNullable: true,
           },
         ],
-      }),
-    );
-    await queryRunner.createForeignKey(
-      'livro_locado',
-      new TableForeignKey({
-        columnNames: ['aluno_locador'],
-        referencedColumnNames: ['id_privado'],
-        referencedTableName: 'aluno',
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
-      }),
-    );
-    await queryRunner.createForeignKey(
-      'livro_locado',
-      new TableForeignKey({
-        columnNames: ['livro_locado'],
-        referencedColumnNames: ['id_privado'],
-        referencedTableName: 'livro',
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
       }),
     );
   }

@@ -14,11 +14,13 @@ export class AtualizarDTO {
   idPublico: string | number;
 
   @IsNotEmpty()
+  @IsOptional()
   dtCriacao: string;
 
   @IsOptional()
   dtAlteracao: string;
 
   @IsEmpty()
+  @IsOptional()
   dtDeletado: string;
 }
