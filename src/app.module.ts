@@ -10,6 +10,8 @@ import { UsuarioModule } from './usuario/usuario.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { AlunoModule } from './aluno/aluno.module';
 
+() =>{}
+
 @Module({
   imports: [
     DatabaseModule,
