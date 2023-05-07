@@ -24,12 +24,12 @@ export class Livro extends AbstractEntity {
    * para fins de consulta e filtros
    */
   @Column({ name: 'qntd_paginas' })
-  qntdPaginas: number;
+  qntdPaginas: string;
 
   @Column({ name: 'unidades' })
-  unidades: number;
+  unidades: string;
   @Column({ name: 'unidades_alugados' })
-  unidadesAlugados: number;
+  unidadesAlugados: string;
 
   //TODO: relaçãop com livro_locado
 

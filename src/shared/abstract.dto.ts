@@ -10,10 +10,10 @@ export class AtualizarDTO {
   @IsNumber()
   idPrivado: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   idPublico: string | number;
 
-  @IsNotEmpty()
+  @IsOptional()
   dtCriacao: string;
 
   @IsOptional()
