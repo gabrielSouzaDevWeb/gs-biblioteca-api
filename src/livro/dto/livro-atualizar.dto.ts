@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { AtualizarDTO } from 'src/shared/abstract.dto';
 
 export class AtualizarLivroDto extends AtualizarDTO {
@@ -24,9 +24,9 @@ export class AtualizarLivroDto extends AtualizarDTO {
 
   @IsNotEmpty()
   @IsString()
-  qntdPaginas: number;
+  qntdPaginas: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  unidades: number;
+  @IsString()
+  unidades: string;
 }

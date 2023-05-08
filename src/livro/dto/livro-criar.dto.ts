@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CriarLivroDto {
   @IsString()
@@ -23,9 +23,9 @@ export class CriarLivroDto {
 
   @IsNotEmpty()
   @IsString()
-  qntdPaginas: number;
+  qntdPaginas: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  unidades: number;
+  @IsString()
+  unidades: string;
 }

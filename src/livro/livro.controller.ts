@@ -45,6 +45,7 @@ export class LivroController {
     await this.service
       .consultarLivro(query)
       .then((result) => {
+        console.log(result);
         res
           .status(HttpStatus.OK)
           .json({ message: 'Consulta realizada com sucesso!!', data: result });
