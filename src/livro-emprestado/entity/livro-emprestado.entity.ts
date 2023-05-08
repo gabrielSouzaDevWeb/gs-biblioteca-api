@@ -9,8 +9,8 @@ import {
   ManyToOne,
 } from 'typeorm';
 
-@Entity({ name: 'livro_locado', orderBy: { dtCriacao: 'DESC' } })
-export class LivroLocado extends AbstractEntity {
+@Entity({ name: 'emprestimo_livros', orderBy: { dtCriacao: 'DESC' } })
+export class LivroEmprestado extends AbstractEntity {
   @Column({ name: 'status_locacao' })
   statusLocacao: number;
 
@@ -26,7 +26,7 @@ export class LivroLocado extends AbstractEntity {
   @Column({ name: 'renovacoes' }) //quantas vezes a locação foi renovada
   renovacao: number;
 
-  @ManyToOne(() => Aluno, (aluno) => aluno.livrosLocados)
+  @ManyToOne(() => Aluno, (aluno) => aluno.idPrivado)
   @JoinColumn({ name: 'aluno_locador' })
   aluno: Aluno;
 
@@ -37,5 +37,5 @@ export class LivroLocado extends AbstractEntity {
   @Column({ name: 'livro_locado' })
   livroLocado: number; //
   @Column({ name: 'aluno_locador' })
-  alunoLocador: number;
+  idAluno: number;
 }

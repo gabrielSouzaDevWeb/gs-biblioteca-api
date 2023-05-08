@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { LivroLocadoService } from './../livro_locado/livro-locado.service';
+import { ILivroEmprestado } from './../livro-emprestado/interface/livro-emprestado.interface';
+import { LivroEmprestadoService } from './../livro-emprestado/livro-emprestado.service';
 
 import { Inject } from '@nestjs/common/decorators';
-import { ILivroLocado } from 'src/livro_locado/interface/livro-locado.interface';
 import { Repository } from 'typeorm';
 import { AtualizarAlunoDto } from './dto/aluno-atualizar.dto';
 import { CriarAlunoDto } from './dto/aluno-criar.dto';
@@ -14,7 +14,7 @@ export class AlunoService {
   constructor(
     @Inject('ALUNO_REPOSITORY')
     private alunoRepository: Repository<Aluno>,
-    private livroLocadoService: LivroLocadoService,
+    private livroEmprestadoService: LivroEmprestadoService,
   ) {}
   async consultarAluno(query: {
     [key: string]: string | number;
@@ -86,7 +86,7 @@ export class AlunoService {
     idPrivadoAluno: number,
     idPrivadoLivro: number,
   ): Promise<any> {
-    return await this.livroLocadoService.alugarLivro(
+    return await this.livroEmprestadoService.alugarLivro(
       idPrivadoAluno,
       idPrivadoLivro,
     );
@@ -95,9 +95,9 @@ export class AlunoService {
   async livrosAlugados(
     req,
     query: { [key: string]: number },
-  ): Promise<ILivroLocado[]> {
+  ): Promise<ILivroEmprestado[]> {
     const { idPrivado } = query;
-    return await this.livroLocadoService.getLivrosAlugadosPorIdPrivadoAluno(
+    return await this.livroEmprestadoService.getLivrosEmprestadosPorIdPrivadoAluno(
       idPrivado,
     );
   }

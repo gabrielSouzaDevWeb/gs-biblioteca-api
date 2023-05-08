@@ -1,6 +1,6 @@
-import { LivroLocado } from 'src/livro_locado/entity/livro-locado.entity';
 import { AbstractEntity } from 'src/shared/abstract.entity';
 import { Column, Entity, JoinColumn, OneToMany } from 'typeorm';
+import { LivroEmprestado } from './../../livro-emprestado/entity/livro-emprestado.entity';
 
 @Entity({ name: 'aluno', orderBy: { dtCriacao: 'DESC' } })
 export class Aluno extends AbstractEntity {
@@ -13,8 +13,8 @@ export class Aluno extends AbstractEntity {
   @Column({ name: 'registro' })
   registro: string;
 
-  @Column({ name: 'sala', type: 'int' })
-  sala: number;
+  @Column({ name: 'id_sala', type: 'int' })
+  idSala: number;
 
   // @ManyToOne(() => Sala, (sala) => sala.idPrivado)
   // rsala: Sala;
@@ -49,9 +49,13 @@ export class Aluno extends AbstractEntity {
   @Column({ name: 'cep' })
   cep: string;
 
-  @OneToMany(() => LivroLocado, (livroLocado) => livroLocado.aluno, {
-    eager: true,
-  })
+  @OneToMany(
+    () => LivroEmprestado,
+    (livroEmprestado) => livroEmprestado.idPrivado,
+    {
+      eager: true,
+    },
+  )
   @JoinColumn({ name: 'id_privado' })
-  livrosLocados: LivroLocado[];
+  livrosEmprestados: LivroEmprestado[];
 }

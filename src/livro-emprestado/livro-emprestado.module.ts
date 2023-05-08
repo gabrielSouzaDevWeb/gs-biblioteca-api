@@ -2,14 +2,15 @@ import { Module } from '@nestjs/common';
 import { Aluno } from 'src/aluno/entity/aluno.entity';
 import { Livro } from 'src/livro/entity/livro.entity';
 import { DataSource } from 'typeorm';
-import { DatabaseModule } from './../database/database.module';
-import { LivroLocado } from './entity/livro-locado.entity';
-import { LivroLocadoController } from './livro-locado.controller';
-import { LivroLocadoService } from './livro-locado.service';
+import { DatabaseModule } from '../database/database.module';
+import { LivroEmprestado } from './entity/livro-emprestado.entity';
+import { LivroEmprestadoController } from './livro-emprestado.controller';
+import { LivroEmprestadoService } from './livro-emprestado.service';
 
-const LIVRO_LOCADO_REPOSITORY = {
-  provide: 'LIVRO_LOCADO_REPOSITORY',
-  useFactory: (dataSource: DataSource) => dataSource.getRepository(LivroLocado),
+const LIVRO_EMPRESTADO_REPOSITORY = {
+  provide: 'LIVRO_EMPRESTADO_REPOSITORY',
+  useFactory: (dataSource: DataSource) =>
+    dataSource.getRepository(LivroEmprestado),
   inject: ['DATA_SOURCE'],
 };
 const LIVRO_REPOSITORY = {
@@ -24,14 +25,14 @@ const ALUNO_REPOSITORY = {
 };
 
 @Module({
-  controllers: [LivroLocadoController],
+  controllers: [LivroEmprestadoController],
   imports: [DatabaseModule],
-  exports: [LIVRO_LOCADO_REPOSITORY, LivroLocadoService],
+  exports: [LIVRO_EMPRESTADO_REPOSITORY, LivroEmprestadoService],
   providers: [
-    LIVRO_LOCADO_REPOSITORY,
+    LIVRO_EMPRESTADO_REPOSITORY,
     LIVRO_REPOSITORY,
     ALUNO_REPOSITORY,
-    LivroLocadoService,
+    LivroEmprestadoService,
   ],
 })
-export class LivroLocadoModule {}
+export class LivroEmprestadoModule {}
