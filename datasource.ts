@@ -7,7 +7,7 @@ export const databaseProviders = new DataSource({
   port: 5432,
   username: 'postgres',
   password: 'postgres',
-  database: 'gs-biblioteca-api',
+  database: 'db-gs-biblioteca-api',
   logging: true,
   synchronize: false,
   // name: 'default',
