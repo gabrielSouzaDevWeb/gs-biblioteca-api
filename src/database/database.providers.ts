@@ -10,7 +10,7 @@ export const databaseProviders = [
         port: 5432,
         username: 'postgres',
         password: 'postgres',
-        database: 'gs-biblioteca-api',
+        database: 'db-gs-biblioteca-api',
         entities: [__dirname + './../**/*.entity{.ts,.js}'],
         migrations: [__dirname + './../../dist/migrations/*.js'],
         synchronize: false,
