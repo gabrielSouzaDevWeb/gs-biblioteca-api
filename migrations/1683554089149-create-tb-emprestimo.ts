@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class createTbLivroLocado1678548915279 implements MigrationInterface {
-  tableName: string = 'livro_locado';
+export class createTbEmprestimo1683554089149 implements MigrationInterface {
+  private tableName: string = 'emprestimo';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
@@ -13,22 +13,37 @@ export class createTbLivroLocado1678548915279 implements MigrationInterface {
             type: 'int',
             isPrimary: true,
             isGenerated: true,
-            // isNullable: false,
           },
           {
             name: 'id_publico',
             type: 'varchar(255)',
-            // isNullable: false,
+            isNullable: true,
             isUnique: true,
           },
-          { name: 'livro_locado', type: 'int', isNullable: false },
-          { name: 'aluno_locador', type: 'int', isNullable: false },
-          { name: 'status_locacao', type: 'int', isNullable: false },
-          { name: 'dt_locacao', type: 'timestamp', isNullable: false },
-          { name: 'dt_renovacao', type: 'timestamp', isNullable: true },
-          { name: 'renovacoes', type: 'int', isNullable: false }, //quantas vezes a locação foi renovada
-          { name: 'dt_vencimento', type: 'timestamp', isNullable: false },
-
+          {
+            name: 'id_aluno',
+            type: 'int',
+            isUnique: true,
+            isNullable: false,
+          },
+          {
+            name: 'id_emprestimo_livros',
+            type: 'int',
+            isUnique: true,
+            isNullable: false,
+          },
+          {
+            name: 'status',
+            type: 'int',
+            isNullable: true,
+            isUnique: true,
+          },
+          {
+            name: 'qntds_livros_alugados',
+            type: 'int',
+            isNullable: true,
+            isUnique: true,
+          },
           {
             name: 'dt_criacao',
             type: 'timestamp',

@@ -1,0 +1,55 @@
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+
+export class createTbLivro1683556982985 implements MigrationInterface {
+  tableName: string = 'livro';
+
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.createTable(
+      new Table({
+        name: this.tableName,
+        columns: [
+          {
+            name: 'id_privado',
+            type: 'int',
+            isPrimary: true,
+            isGenerated: true,
+            // isNullable: false,
+          },
+          {
+            name: 'id_publico',
+            type: 'varchar(255)',
+            // isNullable: false,
+            isUnique: true,
+          },
+          { name: 'livro_locado', type: 'int', isNullable: false },
+          { name: 'aluno_locador', type: 'int', isNullable: false },
+          { name: 'status_locacao', type: 'int', isNullable: false },
+          { name: 'dt_locacao', type: 'timestamp', isNullable: false },
+          { name: 'dt_renovacao', type: 'timestamp', isNullable: true },
+          { name: 'renovacoes', type: 'int', isNullable: false }, //quantas vezes a locação foi renovada
+          { name: 'dt_vencimento', type: 'timestamp', isNullable: false },
+
+          {
+            name: 'dt_criacao',
+            type: 'timestamp',
+            default: 'now()',
+            isNullable: true,
+          },
+          {
+            name: 'dt_alteracao',
+            type: 'timestamp',
+            onUpdate: 'now()',
+            isNullable: true,
+          },
+          {
+            name: 'dt_deletado',
+            type: 'timestamp',
+            isNullable: true,
+          },
+        ],
+      }),
+    );
+  }
+
+  public async down(queryRunner: QueryRunner): Promise<void> {}
+}

@@ -28,7 +28,7 @@ export class createTbAluno1680392071048 implements MigrationInterface {
             isNullable: true,
             isUnique: true,
           },
-          { name: 'sala', type: 'int', isNullable: true },
+          { name: 'id_sala', type: 'int', isNullable: true },
 
           {
             name: 'registro',
