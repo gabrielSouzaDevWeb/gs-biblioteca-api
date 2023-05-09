@@ -22,19 +22,16 @@ export class createTbAlunoSalas1683565053683 implements MigrationInterface {
           {
             name: 'id_aluno',
             type: 'int',
-            isUnique: true,
             isNullable: false,
           },
           {
             name: 'id_sala',
             type: 'int',
-            isUnique: true,
             isNullable: false,
           },
           {
             name: 'exercicio',
-            type: 'int',
-            isUnique: true,
+            type: 'varchar(4)',
             isNullable: false,
           },
           {

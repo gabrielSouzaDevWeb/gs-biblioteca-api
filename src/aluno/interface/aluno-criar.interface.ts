@@ -5,7 +5,7 @@ export interface IAluno {
   nome: string;
   matricula?: string;
   registro?: string;
-  idSala: number;
+  idSala?: number;
   rua: string;
   numero: number;
   complemento: string;

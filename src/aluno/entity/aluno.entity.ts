@@ -13,21 +13,6 @@ export class Aluno extends AbstractEntity {
   @Column({ name: 'registro' })
   registro: string;
 
-  @Column({ name: 'id_sala', type: 'int' })
-  idSala: number;
-
-  // @ManyToOne(() => Sala, (sala) => sala.idPrivado)
-  // rsala: Sala;
-
-  @Column({ name: 'email' })
-  email: string;
-
-  @Column({ name: 'tel' })
-  tel: string;
-
-  @Column({ name: 'tel_responsavel' })
-  telResponsavel: string;
-
   @Column({ name: 'rua' })
   rua: string;
 
@@ -48,6 +33,15 @@ export class Aluno extends AbstractEntity {
 
   @Column({ name: 'cep' })
   cep: string;
+
+  @Column({ name: 'email' })
+  email: string;
+
+  @Column({ name: 'tel' })
+  tel: string;
+
+  @Column({ name: 'tel_responsavel' })
+  telResponsavel: string;
 
   @OneToMany(
     () => LivroEmprestado,

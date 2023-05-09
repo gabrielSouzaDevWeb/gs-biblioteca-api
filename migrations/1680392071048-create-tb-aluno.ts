@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class createTbAluno1680392071048 implements MigrationInterface {
-  private tableName: string = 'aluno';
+  private tableName = 'aluno';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
@@ -28,16 +28,12 @@ export class createTbAluno1680392071048 implements MigrationInterface {
             isNullable: true,
             isUnique: true,
           },
-          { name: 'id_sala', type: 'int', isNullable: true },
-
           {
             name: 'registro',
             type: 'varchar(255)',
             isNullable: false,
             isUnique: true,
           },
-          { name: 'livro_locado', type: 'int', isNullable: true },
-
           {
             name: 'rua',
             type: 'varchar(255)',

@@ -104,7 +104,7 @@ export class AlunoService {
 
   async adicionarIdPublico(aluno: IAluno): Promise<void> {
     if (aluno.idPrivado) {
-      const idPublico: string = String(aluno.idPrivado);
+      const idPublico = String(aluno.idPrivado);
       await this.alunoRepository.update(aluno.idPrivado, {
         idPublico,
         dtAlteracao: null,
