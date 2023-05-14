@@ -1,8 +1,8 @@
 import { BadGatewayException, Injectable } from '@nestjs/common';
 import { Inject } from '@nestjs/common/decorators';
 import { Aluno } from 'src/aluno/entity/aluno.entity';
+import { LIVRO_EMPRESTADO_STATUS } from 'src/common/enum/livro-emprestado.enum';
 import { Livro } from 'src/livro/entity/livro.entity';
-import { LIVRO_EMPRESTADO_STATUS } from 'src/shared/enum/livro-emprestado.enum';
 import { Repository } from 'typeorm';
 import { LivroEmprestado } from './entity/livro-emprestado.entity';
 import { ILivroEmprestado } from './interface/livro-emprestado.interface';

@@ -1,9 +1,11 @@
-import { AbstractEntity } from 'src/shared/abstract.entity';
+import { AbstractEntity } from 'src/common/entity/abstract.entity';
+import { AlunoSalas } from 'src/common/entity/aluno-salas.entity';
 import { Column, Entity, JoinColumn, OneToMany } from 'typeorm';
-import { LivroEmprestado } from './../../livro-emprestado/entity/livro-emprestado.entity';
+import { IAbstractColumns } from './../../common/types/abstract-columns.type';
+import { Emprestimo } from 'src/common/entity/emprestimo.entity';
 
 @Entity({ name: 'aluno', orderBy: { dtCriacao: 'DESC' } })
-export class Aluno extends AbstractEntity {
+export class Aluno extends AbstractEntity implements IAbstractColumns {
   @Column({ name: 'nome' })
   nome: string;
 
@@ -43,13 +45,11 @@ export class Aluno extends AbstractEntity {
   @Column({ name: 'tel_responsavel' })
   telResponsavel: string;
 
-  @OneToMany(
-    () => LivroEmprestado,
-    (livroEmprestado) => livroEmprestado.idPrivado,
-    {
-      eager: true,
-    },
-  )
-  @JoinColumn({ name: 'id_privado' })
-  livrosEmprestados: LivroEmprestado[];
+  @OneToMany(() => AlunoSalas, (alunoSalas) => alunoSalas.aluno)
+  @JoinColumn({ name: 'salas', referencedColumnName: 'idAluno' })
+  salas: AlunoSalas[];
+
+  @OneToMany(() => Emprestimo, (emprestimo) => emprestimo.aluno)
+  @JoinColumn({ name: 'emprestimos', referencedColumnName: 'idAluno' })
+  emprestimos: Emprestimo[];
 }

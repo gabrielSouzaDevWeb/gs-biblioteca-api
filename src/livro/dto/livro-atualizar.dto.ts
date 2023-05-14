@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { AtualizarDTO } from 'src/shared/abstract.dto';
+import { AtualizarDTO } from 'src/common/dto/abstract.dto';
 
 export class AtualizarLivroDto extends AtualizarDTO {
   @IsString()

@@ -15,6 +15,7 @@ export interface IAluno {
   cep: string;
   email: string;
   tel: string;
+  salas?: Array<any>;
   telResponsavel: string;
   dtAlteracao?: Timestamp;
   dtCriacao?: Timestamp;

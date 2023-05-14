@@ -7,9 +7,10 @@ import {
   Timestamp,
   UpdateDateColumn,
 } from 'typeorm';
+import { IAbstractColumns } from '../types/abstract-columns.type';
 
 @Entity()
-export class AbstractEntity {
+export class AbstractEntity implements IAbstractColumns {
   @PrimaryGeneratedColumn({ name: 'id_privado' })
   idPrivado: number;
 

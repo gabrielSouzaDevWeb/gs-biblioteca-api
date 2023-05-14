@@ -40,6 +40,7 @@ export class AlunoController {
   @Post()
   async criarAluno(@Body() aluno: CriarAlunoDto, @Req() req, @Res() res) {
     // return res.status(200).json(aluno);
+    console.log('touch');
     await this.service
       .criarAluno(aluno, req)
       .then((result) =>
@@ -77,6 +78,7 @@ export class AlunoController {
     @Req() req,
     @Query() query: { [key: string]: string | number },
   ) {
+    console.log('touch');
     await this.service
       .consultarAluno(query)
       .then((result) => {

@@ -1,6 +1,6 @@
 import { Aluno } from 'src/aluno/entity/aluno.entity';
+import { AbstractEntity } from 'src/common/entity/abstract.entity';
 import { Livro } from 'src/livro/entity/livro.entity';
-import { AbstractEntity } from 'src/shared/abstract.entity';
 import {
   Column,
   CreateDateColumn,

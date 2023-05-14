@@ -10,6 +10,7 @@ import { LivroModule } from './livro/livro.module';
 import { SalaAlunosModule } from './sala-alunos/sala-alunos.module';
 import { SalaModule } from './sala/sala.module';
 import { UsuarioModule } from './usuario/usuario.module';
+import { EmprestimoModule } from './emprestimo/emprestimo.module';
 
 () => {};
 
@@ -24,6 +25,7 @@ import { UsuarioModule } from './usuario/usuario.module';
     LivroEmprestadoModule,
     SalaModule,
     SalaAlunosModule,
+    EmprestimoModule,
   ],
   controllers: [AppController],
   providers: [AppService],

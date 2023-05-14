@@ -1,5 +1,5 @@
+import { AbstractEntity } from 'src/common/entity/abstract.entity';
 import { LivroEmprestado } from 'src/livro-emprestado/entity/livro-emprestado.entity';
-import { AbstractEntity } from 'src/shared/abstract.entity';
 import { Column, Entity, JoinColumn, OneToMany } from 'typeorm';
 
 @Entity({ name: 'livro', orderBy: { dtCriacao: 'DESC' } })

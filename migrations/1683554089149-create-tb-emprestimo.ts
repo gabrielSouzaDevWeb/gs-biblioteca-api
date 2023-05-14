@@ -38,8 +38,9 @@ export class createTbEmprestimo1683554089149 implements MigrationInterface {
             isNullable: true,
             isUnique: true,
           },
+
           {
-            name: 'qntds_livros_alugados',
+            name: 'qntd_livros_alugados',
             type: 'int',
             isNullable: true,
             isUnique: true,

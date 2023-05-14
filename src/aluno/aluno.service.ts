@@ -32,6 +32,9 @@ export class AlunoService {
       const paginacao = ['page', 'all', 'take'];
       const alunos = await this.alunoRepository.createQueryBuilder('aluno');
 
+      alunos.leftJoinAndSelect('aluno.salas', 'salas');
+      alunos.leftJoinAndSelect('aluno.emprestimos', 'emprestimos');
+
       for (const key in query) {
         if (camposConsultadosComILike.includes(key)) {
           alunos.andWhere(`aluno.${key} ilike '%${query[key]}%'`);
@@ -54,32 +57,39 @@ export class AlunoService {
         alunos.andWhere(`aluno.${key} = ${query[key]}`);
       }
       const result = await alunos.getMany();
+      // console.log(result);
       const count = await alunos.getCount();
       return { result, count };
     } catch (error) {
-      throw new Error(error);
+      console.log(error);
+      throw new BadRequestException(error);
     }
   }
 
   async criarAluno(aluno: CriarAlunoDto, req): Promise<IAluno> {
-    const alunoExiste: boolean = await this.verificarAlunoCriarExiste(aluno);
-    if (alunoExiste) {
-      throw new BadRequestException(
-        'Já existe aluno cadastrado com essa matricula ou com esse registro',
-      );
-    }
-    let alunoCriado: IAluno;
-    await this.alunoRepository
-      .save(aluno)
-      .then((aluno) => {
-        alunoCriado = aluno;
-        this.adicionarIdPublico(aluno);
-      })
-      .catch((err) => {
-        throw new BadRequestException(err);
-      });
+    try {
+      const alunoExiste: boolean = await this.verificarAlunoCriarExiste(aluno);
+      if (alunoExiste) {
+        throw new BadRequestException(
+          'Já existe aluno cadastrado com essa matricula ou com esse registro',
+        );
+      }
+      let alunoCriado: IAluno;
+      await this.alunoRepository
+        .save(aluno)
+        .then((aluno) => {
+          alunoCriado = aluno;
+          this.adicionarIdPublico(aluno);
+        })
+        .catch((err) => {
+          console.log(err);
+          throw new BadRequestException(err);
+        });
 
-    return alunoCriado;
+      return alunoCriado;
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
   }
 
   async alunoAlugarlivro(
@@ -124,12 +134,16 @@ export class AlunoService {
   }
 
   async verificarAlunoCriarExiste(aluno: CriarAlunoDto): Promise<boolean> {
-    const registroAlunoEncontrado: IAluno =
-      await this.consultarAlunoPorChaveValor('matricula', aluno.matricula);
+    try {
+      const registroAlunoEncontrado: IAluno =
+        await this.consultarAlunoPorChaveValor('matricula', aluno.matricula);
 
-    const matriculaAlunoEncontrado: IAluno =
-      await this.consultarAlunoPorChaveValor('registro', aluno.registro);
-    return !!registroAlunoEncontrado || !!matriculaAlunoEncontrado;
+      const matriculaAlunoEncontrado: IAluno =
+        await this.consultarAlunoPorChaveValor('registro', aluno.registro);
+      return !!registroAlunoEncontrado || !!matriculaAlunoEncontrado;
+    } catch (error) {
+      new BadRequestException(error);
+    }
   }
 
   public async consultarAlunoPorChaveValor(

@@ -30,7 +30,7 @@ export class createTbAlunoSalas1683565053683 implements MigrationInterface {
             isNullable: false,
           },
           {
-            name: 'exercicio',
+            name: 'ano_letivo',
             type: 'varchar(4)',
             isNullable: false,
           },
