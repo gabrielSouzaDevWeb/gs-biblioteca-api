@@ -1,4 +1,5 @@
 import { DataSource } from 'typeorm';
+import * as entities from './../common/entity';
 
 export const databaseProviders = [
   {
@@ -11,7 +12,7 @@ export const databaseProviders = [
         username: 'postgres',
         password: 'postgres',
         database: 'db-gs-biblioteca-api',
-        entities: [__dirname + './../**/*.entity{.ts,.js}'],
+        entities,
         migrations: [__dirname + './../../dist/migrations/*.js'],
         synchronize: false,
 

@@ -1,5 +1,4 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { ILivroEmprestado } from './../livro-emprestado/interface/livro-emprestado.interface';
 import { LivroEmprestadoService } from './../livro-emprestado/livro-emprestado.service';
 
 import { Inject } from '@nestjs/common/decorators';
@@ -102,15 +101,15 @@ export class AlunoService {
     );
   }
 
-  async livrosAlugados(
-    req,
-    query: { [key: string]: number },
-  ): Promise<ILivroEmprestado[]> {
-    const { idPrivado } = query;
-    return await this.livroEmprestadoService.getLivrosEmprestadosPorIdPrivadoAluno(
-      idPrivado,
-    );
-  }
+  // async livrosAlugados(
+  //   req,
+  //   query: { [key: string]: number },
+  // ): Promise<ILivroEmprestado[]> {
+  //   const { idPrivado } = query;
+  //   return await this.livroEmprestadoService.getLivrosEmprestadosPorIdPrivadoAluno(
+  //     idPrivado,
+  //   );
+  // }
 
   async adicionarIdPublico(aluno: IAluno): Promise<void> {
     if (aluno.idPrivado) {

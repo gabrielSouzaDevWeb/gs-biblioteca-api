@@ -1,5 +1,4 @@
 import { AbstractEntity } from 'src/common/entity/abstract.entity';
-import { Aluno } from 'src/common/entity/aluno.entity';
 import { Livro } from 'src/common/entity/livro.entity';
 import {
   Column,
@@ -12,7 +11,7 @@ import { Emprestimo } from './emprestimo.entity';
 
 @Entity({ name: 'emprestimo_livros', orderBy: { dtCriacao: 'DESC' } })
 export class EmprestimoLivros extends AbstractEntity {
-  @Column({ name: 'status_locacao' })
+  @Column({ name: 'status_emprestimo' })
   statusLocacao: number;
 
   @Column({ name: 'dt_locacao' })
@@ -27,18 +26,19 @@ export class EmprestimoLivros extends AbstractEntity {
   @Column({ name: 'renovacoes' }) //quantas vezes a locação foi renovada
   renovacao: number;
 
-  @ManyToOne(() => Aluno, (aluno) => aluno.idPrivado)
-  @JoinColumn({ name: 'aluno_locador' })
-  aluno: Aluno;
+  // @ManyToOne(() => Aluno, (aluno) => aluno.idPrivado)
+  // @JoinColumn({ name: 'aluno_locador' })
+  // aluno: Aluno;
 
   @ManyToOne(() => Livro, (livro) => livro.locacoes)
-  @JoinColumn({ name: 'livro_locado' })
+  @JoinColumn({ name: 'id_livro_emprestado' })
   livro: Livro;
 
-  @Column({ name: 'livro_locado' })
-  livroLocado: number; //
-  @Column({ name: 'aluno_locador' })
-  idAluno: number;
+  @Column({ name: 'id_livro_emprestado' })
+  idLivroEmprestado: number; //
+
+  // @Column({ name: 'aluno_locador' })
+  // idAluno: number;
 
   @ManyToOne(() => Emprestimo, (emprestimo) => emprestimo.livrosEmprestado)
   @JoinColumn({ name: 'id_privado', referencedColumnName: 'idAluno' })

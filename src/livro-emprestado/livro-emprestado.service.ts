@@ -16,25 +16,25 @@ export class LivroEmprestadoService {
     private livroEmprestadoRepository: Repository<EmprestimoLivros>,
   ) {}
 
-  async getLivrosEmprestadosPorIdPrivadoAluno(
-    idPrivado: number,
-  ): Promise<ILivroEmprestado[]> {
-    const livrosEmprestados = await this.livroEmprestadoRepository.find({
-      where: { idAluno: idPrivado },
-      relations: ['livro'],
-    });
-    const livroEmprestadoMaped = livrosEmprestados.map((livrosEmprestado) => {
-      const { livro, ...emprestado } = livrosEmprestado;
-      return {
-        ...emprestado,
-        nomLivro: livro.nomLivro,
-        categoria: livro.categoria,
-        nomAutor: livro.nomAutor,
-      };
-    });
+  // async getLivrosEmprestadosPorIdPrivadoAluno(
+  //   idPrivado: number,
+  // ): Promise<ILivroEmprestado[]> {
+  //   const livrosEmprestados = await this.livroEmprestadoRepository.find({
+  //     where: { idAluno: idPrivado },
+  //     relations: ['livro'],
+  //   });
+  //   const livroEmprestadoMaped = livrosEmprestados.map((livrosEmprestado) => {
+  //     const { livro, ...emprestado } = livrosEmprestado;
+  //     return {
+  //       ...emprestado,
+  //       nomLivro: livro.nomLivro,
+  //       categoria: livro.categoria,
+  //       nomAutor: livro.nomAutor,
+  //     };
+  //   });
 
-    return livroEmprestadoMaped;
-  }
+  //   return livroEmprestadoMaped;
+  // }
 
   async alugarLivro(
     idPrivadoAluno: number,

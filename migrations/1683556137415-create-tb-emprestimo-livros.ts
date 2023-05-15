@@ -30,7 +30,7 @@ export class createTbEmprestimoLivros1683556137415
           { name: 'dt_renovacao', type: 'timestamp', isNullable: true },
           { name: 'renovacoes', type: 'int', isNullable: false }, //quantas vezes o emprestimo foi renovada
           { name: 'dt_vencimento', type: 'timestamp', isNullable: false },
-
+          { name: 'dt_locacao', type: 'timestamp', isNullable: false },
           {
             name: 'dt_criacao',
             type: 'timestamp',
