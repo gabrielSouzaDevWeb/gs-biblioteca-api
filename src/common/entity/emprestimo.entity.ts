@@ -10,7 +10,7 @@ export class Emprestimo extends AbstractEntity implements IAbstractColumns {
   idAluno: number;
 
   @Column({ name: 'id_emprestimo_livros' })
-  idEmprestimoLivro: number;
+  idEmprestimoLivros: number;
 
   @Column({ name: 'status' })
   status: number;

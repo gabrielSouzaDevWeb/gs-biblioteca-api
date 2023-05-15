@@ -33,6 +33,10 @@ export class AlunoService {
 
       alunos.leftJoinAndSelect('aluno.salas', 'salas');
       alunos.leftJoinAndSelect('aluno.emprestimos', 'emprestimos');
+      alunos.leftJoinAndSelect(
+        'emprestimos.livrosEmprestado',
+        'emprestimoLivros',
+      );
 
       for (const key in query) {
         if (camposConsultadosComILike.includes(key)) {
