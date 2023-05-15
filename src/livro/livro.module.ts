@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { DatabaseModule } from 'src/database/database.module';
 import { DataSource } from 'typeorm';
-import { Livro } from './entity/livro.entity';
+import { Livro } from '../common/entity/livro.entity';
 import { LivroController } from './livro.controller';
 import { LivroService } from './livro.service';
 const LIVRO_REPOSITORY = {

@@ -1,7 +1,7 @@
 import { AbstractEntity } from 'src/common/entity/abstract.entity';
 import { AlunoSalas } from 'src/common/entity/aluno-salas.entity';
 import { Column, Entity, JoinColumn, OneToMany } from 'typeorm';
-import { IAbstractColumns } from './../../common/types/abstract-columns.type';
+import { IAbstractColumns } from '../types/abstract-columns.type';
 import { Emprestimo } from 'src/common/entity/emprestimo.entity';
 
 @Entity({ name: 'aluno', orderBy: { dtCriacao: 'DESC' } })

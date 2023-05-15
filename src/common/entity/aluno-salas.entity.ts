@@ -1,4 +1,4 @@
-import { Aluno } from 'src/aluno/entity/aluno.entity';
+import { Aluno } from 'src/common/entity/aluno.entity';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { IAbstractColumns } from '../types/abstract-columns.type';
 import { AbstractEntity } from './abstract.entity';

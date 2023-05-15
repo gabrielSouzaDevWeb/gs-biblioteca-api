@@ -4,9 +4,9 @@ import { LivroEmprestadoService } from './../livro-emprestado/livro-emprestado.s
 
 import { Inject } from '@nestjs/common/decorators';
 import { Repository } from 'typeorm';
+import { Aluno } from '../common/entity/aluno.entity';
 import { AtualizarAlunoDto } from './dto/aluno-atualizar.dto';
 import { CriarAlunoDto } from './dto/aluno-criar.dto';
-import { Aluno } from './entity/aluno.entity';
 import { IAluno } from './interface/aluno-criar.interface';
 
 @Injectable()

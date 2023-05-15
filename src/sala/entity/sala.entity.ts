@@ -1,5 +1,5 @@
-import { Aluno } from 'src/aluno/entity/aluno.entity';
 import { AbstractEntity } from 'src/common/entity/abstract.entity';
+import { Aluno } from 'src/common/entity/aluno.entity';
 import { Column, Entity, OneToMany } from 'typeorm';
 
 @Entity({ name: 'sala', orderBy: { dtCriacao: 'DESC' } })

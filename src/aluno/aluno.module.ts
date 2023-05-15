@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { DatabaseModule } from 'src/database/database.module';
 import { DataSource } from 'typeorm';
+import { Aluno } from '../common/entity/aluno.entity';
 import { LivroEmprestadoModule } from './../livro-emprestado/livro-emprestado.module';
 import { AlunoController } from './aluno.controller';
 import { AlunoService } from './aluno.service';
-import { Aluno } from './entity/aluno.entity';
 
 const ALUNO_REPOSITORY = {
   provide: 'ALUNO_REPOSITORY',

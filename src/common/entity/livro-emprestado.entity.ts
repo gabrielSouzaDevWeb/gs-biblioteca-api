@@ -1,6 +1,6 @@
-import { Aluno } from 'src/aluno/entity/aluno.entity';
 import { AbstractEntity } from 'src/common/entity/abstract.entity';
-import { Livro } from 'src/livro/entity/livro.entity';
+import { Aluno } from 'src/common/entity/aluno.entity';
+import { Livro } from 'src/common/entity/livro.entity';
 import {
   Column,
   CreateDateColumn,
@@ -8,9 +8,10 @@ import {
   JoinColumn,
   ManyToOne,
 } from 'typeorm';
+import { Emprestimo } from './emprestimo.entity';
 
 @Entity({ name: 'emprestimo_livros', orderBy: { dtCriacao: 'DESC' } })
-export class LivroEmprestado extends AbstractEntity {
+export class EmprestimoLivros extends AbstractEntity {
   @Column({ name: 'status_locacao' })
   statusLocacao: number;
 
@@ -38,4 +39,8 @@ export class LivroEmprestado extends AbstractEntity {
   livroLocado: number; //
   @Column({ name: 'aluno_locador' })
   idAluno: number;
+
+  @ManyToOne(() => Emprestimo, (emprestimo) => emprestimo.livrosEmprestado)
+  @JoinColumn({ name: 'id_privado', referencedColumnName: 'idAluno' })
+  emprestimo: Livro;
 }

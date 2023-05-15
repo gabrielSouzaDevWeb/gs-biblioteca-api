@@ -1,10 +1,10 @@
 import { BadGatewayException, Injectable } from '@nestjs/common';
 import { Inject } from '@nestjs/common/decorators';
-import { Aluno } from 'src/aluno/entity/aluno.entity';
+import { Aluno } from 'src/common/entity/aluno.entity';
+import { Livro } from 'src/common/entity/livro.entity';
 import { LIVRO_EMPRESTADO_STATUS } from 'src/common/enum/livro-emprestado.enum';
-import { Livro } from 'src/livro/entity/livro.entity';
 import { Repository } from 'typeorm';
-import { LivroEmprestado } from './entity/livro-emprestado.entity';
+import { EmprestimoLivros } from '../common/entity/livro-emprestado.entity';
 import { ILivroEmprestado } from './interface/livro-emprestado.interface';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class LivroEmprestadoService {
     @Inject('LIVRO_REPOSITORY') private livroRepository: Repository<Livro>,
     @Inject('ALUNO_REPOSITORY') private alunoRepository: Repository<Aluno>,
     @Inject('LIVRO_EMPRESTADO_REPOSITORY')
-    private livroEmprestadoRepository: Repository<LivroEmprestado>,
+    private livroEmprestadoRepository: Repository<EmprestimoLivros>,
   ) {}
 
   async getLivrosEmprestadosPorIdPrivadoAluno(

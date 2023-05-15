@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
-import { Aluno } from 'src/aluno/entity/aluno.entity';
-import { Livro } from 'src/livro/entity/livro.entity';
+import { Aluno } from 'src/common/entity/aluno.entity';
+import { Livro } from 'src/common/entity/livro.entity';
 import { DataSource } from 'typeorm';
+import { EmprestimoLivros } from '../common/entity/livro-emprestado.entity';
 import { DatabaseModule } from '../database/database.module';
-import { LivroEmprestado } from './entity/livro-emprestado.entity';
 import { LivroEmprestadoController } from './livro-emprestado.controller';
 import { LivroEmprestadoService } from './livro-emprestado.service';
 
 const LIVRO_EMPRESTADO_REPOSITORY = {
   provide: 'LIVRO_EMPRESTADO_REPOSITORY',
   useFactory: (dataSource: DataSource) =>
-    dataSource.getRepository(LivroEmprestado),
+    dataSource.getRepository(EmprestimoLivros),
   inject: ['DATA_SOURCE'],
 };
 const LIVRO_REPOSITORY = {
