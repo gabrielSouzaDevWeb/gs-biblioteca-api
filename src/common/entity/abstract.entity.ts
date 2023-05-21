@@ -14,7 +14,7 @@ export class AbstractEntity implements IAbstractColumns {
   @PrimaryGeneratedColumn({ name: 'id_privado' })
   idPrivado: number;
 
-  @Column({ name: 'id_publico' })
+  @Column({ name: 'id_publico' }) 
   idPublico: string;
 
   @CreateDateColumn({ name: 'dt_criacao' })

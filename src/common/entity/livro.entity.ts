@@ -7,11 +7,11 @@ export class Livro extends AbstractEntity {
   @Column({ name: 'nom_livro' })
   nomLivro: string;
 
-  @Column({ name: 'nom_autor' })
-  nomAutor: string;
+  @Column({ name: 'autor' })
+  autor: string;
 
-  @Column({ name: 'categoria' })
-  categoria: string;
+  @Column({ name: 'genero' })
+  genero: string;
 
   @Column({ name: 'estante' })
   estante: string;
@@ -23,13 +23,13 @@ export class Livro extends AbstractEntity {
    * TODO: Garatir que a coluna será tratada como número para
    * para fins de consulta e filtros
    */
-  @Column({ name: 'qntd_paginas' })
+  @Column({ name: 'qntd_pags' })
   qntdPaginas: string;
 
-  @Column({ name: 'unidades' })
+  @Column({ name: 'qntd' })
   unidades: string;
-  @Column({ name: 'unidades_alugados' })
-  unidadesEmprestadas: string;
+  // @Column({ name: 'unidades_alugados' })
+  // unidadesEmprestadas: string;
 
   //TODO: relaçãop com livro_locado
 
@@ -37,6 +37,9 @@ export class Livro extends AbstractEntity {
     () => EmprestimoLivros,
     (emprestimoLivros) => emprestimoLivros.livro,
   )
-  @JoinColumn({ name: 'id_privado' })
-  locacoes: EmprestimoLivros[];
+  @JoinColumn({
+    name: 'id_privado',
+    referencedColumnName: 'id_livro_emprestado',
+  })
+  emprestimoLivros: EmprestimoLivros[];
 }

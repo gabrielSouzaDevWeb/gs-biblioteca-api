@@ -15,7 +15,7 @@ export class LivroService {
 
   async consultarLivro(query: {
     [key: string]: string | number;
-  }): Promise<{ result: Array<ILivro>; count: number }> {
+  }): Promise<{ result: Array<ILivro>; count: number } | any> {
     try {
       const camposConsultadosComILike: string[] = [
         'nomLivro',

@@ -1,8 +1,8 @@
 import { AbstractEntity } from 'src/common/entity/abstract.entity';
 import { AlunoSalas } from 'src/common/entity/aluno-salas.entity';
+import { Emprestimo } from 'src/common/entity/emprestimo.entity';
 import { Column, Entity, JoinColumn, OneToMany } from 'typeorm';
 import { IAbstractColumns } from '../types/abstract-columns.type';
-import { Emprestimo } from 'src/common/entity/emprestimo.entity';
 
 @Entity({ name: 'aluno', orderBy: { dtCriacao: 'DESC' } })
 export class Aluno extends AbstractEntity implements IAbstractColumns {
@@ -50,6 +50,6 @@ export class Aluno extends AbstractEntity implements IAbstractColumns {
   salas: AlunoSalas[];
 
   @OneToMany(() => Emprestimo, (emprestimo) => emprestimo.aluno)
-  @JoinColumn({ name: 'emprestimos', referencedColumnName: 'idAluno' })
+  @JoinColumn({ name: 'emprestimos', referencedColumnName: 'idPrivado' })
   emprestimos: Emprestimo[];
 }

@@ -27,10 +27,12 @@ export class EmprestimoService {
         'emprestimo',
       );
 
+      emprestimos.leftJoinAndSelect('emprestimo.aluno', 'aluno');
       emprestimos.leftJoinAndSelect(
         'emprestimo.livrosEmprestado',
-        'emprestimoLivros',
+        'livrosEmprestado',
       );
+      emprestimos.leftJoinAndSelect('livrosEmprestado.livro', 'livro');
 
       for (const key in query) {
         if (camposConsultadosComILike.includes(key)) {

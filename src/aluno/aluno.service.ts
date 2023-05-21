@@ -37,6 +37,7 @@ export class AlunoService {
         'emprestimos.livrosEmprestado',
         'emprestimoLivros',
       );
+      alunos.leftJoinAndSelect('emprestimoLivros.livro', 'livro');
 
       for (const key in query) {
         if (camposConsultadosComILike.includes(key)) {

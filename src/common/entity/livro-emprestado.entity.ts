@@ -30,17 +30,27 @@ export class EmprestimoLivros extends AbstractEntity {
   // @JoinColumn({ name: 'aluno_locador' })
   // aluno: Aluno;
 
-  @ManyToOne(() => Livro, (livro) => livro.locacoes)
-  @JoinColumn({ name: 'id_livro_emprestado' })
-  livro: Livro;
+  // @ManyToOne(() => Livro, (livro) => livro.locacoes)
+  // @JoinColumn({ name: 'id_livro_emprestado' })
+  // livro: Livro;
 
   @Column({ name: 'id_livro_emprestado' })
   idLivroEmprestado: number; //
+
+  @Column({ name: 'id_emprestimo' })
+  idEmprestimo: number;
 
   // @Column({ name: 'aluno_locador' })
   // idAluno: number;
 
   @ManyToOne(() => Emprestimo, (emprestimo) => emprestimo.livrosEmprestado)
-  @JoinColumn({ name: 'id_privado', referencedColumnName: 'idAluno' })
-  emprestimo: Livro;
+  @JoinColumn({ name: 'id_emprestimo', referencedColumnName: 'idPrivado' })
+  emprestimo: Emprestimo;
+
+  @ManyToOne(() => Livro, (livro) => livro.emprestimoLivros)
+  @JoinColumn({
+    name: 'id_livro_emprestado',
+    referencedColumnName: 'idPrivado',
+  })
+  livro: Livro;
 }

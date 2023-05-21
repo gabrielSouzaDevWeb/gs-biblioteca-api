@@ -2,7 +2,6 @@ import { BadGatewayException, Injectable } from '@nestjs/common';
 import { Inject } from '@nestjs/common/decorators';
 import { Aluno } from 'src/common/entity/aluno.entity';
 import { Livro } from 'src/common/entity/livro.entity';
-import { LIVRO_EMPRESTADO_STATUS } from 'src/common/enum/livro-emprestado.enum';
 import { Repository } from 'typeorm';
 import { EmprestimoLivros } from '../common/entity/livro-emprestado.entity';
 import { ILivroEmprestado } from './interface/livro-emprestado.interface';
@@ -39,7 +38,7 @@ export class LivroEmprestadoService {
   async alugarLivro(
     idPrivadoAluno: number,
     idPrivadoLivro: number,
-  ): Promise<ILivroEmprestado> {
+  ): Promise<ILivroEmprestado | any> {
     try {
       const aluno = await this.alunoRepository.findOne({
         where: { idPrivado: idPrivadoAluno },
@@ -55,11 +54,11 @@ export class LivroEmprestadoService {
         throw new BadGatewayException('Livro não encontrado!');
       }
 
-      if (livro.unidades === livro.unidadesEmprestadas) {
-        throw new BadGatewayException(
-          'Não há unidades desse livro disponível no momento.',
-        );
-      }
+      // if (livro.unidades === livro.unidadesEmprestadas) {
+      //   throw new BadGatewayException(
+      //     'Não há unidades desse livro disponível no momento.',
+      //   );
+      // }
 
       /**
       
@@ -71,15 +70,15 @@ export class LivroEmprestadoService {
        */
 
       // TODO: melhorar essa parte do código
-      const livroEmprestado: ILivroEmprestado = {
-        aluno: aluno,
-        livro: livro,
-        statusLocacao: LIVRO_EMPRESTADO_STATUS.EMPRESTADO, // 1 : emprestado
-        livroEmprestado: livro.idPrivado,
-        idAluno: aluno.idPrivado,
-        dtLocacao: new Date(),
-        dtVencimento: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 dias para devolução
-        renovacao: 0,
+      const livroEmprestado: Partial<Livro> = {
+        // aluno: aluno,
+        // livro: livro,
+        // statusLocacao: LIVRO_EMPRESTADO_STATUS.EMPRESTADO, // 1 : emprestado
+        // livroEmprestado: livro.idPrivado,
+        // idAluno: aluno.idPrivado,
+        // dtLocacao: new Date(),
+        // dtVencimento: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 dias para devolução
+        // renovacao: 0,
       };
 
       const locacao = await this.livroEmprestadoRepository.save(

@@ -21,14 +21,60 @@ export class createTbLivro1683556982985 implements MigrationInterface {
             // isNullable: false,
             isUnique: true,
           },
-          { name: 'livro_locado', type: 'int', isNullable: false },
-          { name: 'aluno_locador', type: 'int', isNullable: false },
-          { name: 'status_locacao', type: 'int', isNullable: false },
-          { name: 'dt_locacao', type: 'timestamp', isNullable: false },
-          { name: 'dt_renovacao', type: 'timestamp', isNullable: true },
-          { name: 'renovacoes', type: 'int', isNullable: false }, //quantas vezes a locação foi renovada
-          { name: 'dt_vencimento', type: 'timestamp', isNullable: false },
-
+          {
+            name: 'nom_livro',
+            type: 'varchar(255)',
+            isUnique: true,
+            isNullable: false,
+          },
+          {
+            name: 'genero',
+            type: 'varchar(255)',
+            isUnique: false,
+            isNullable: false,
+          },
+          {
+            name: 'classificacao',
+            type: 'varchar(255)',
+            isUnique: false,
+            isNullable: true,
+          },
+          {
+            name: 'autor',
+            type: 'varchar(255)',
+            isUnique: false,
+            isNullable: true,
+          },
+          {
+            name: 'editora',
+            type: 'varchar(255)',
+            isUnique: false,
+            isNullable: true,
+          },
+          {
+            name: 'qntd_pags',
+            type: 'varchar(8)',
+            isUnique: false,
+            isNullable: true,
+          },
+          {
+            name: 'estante',
+            type: 'varchar(255)',
+            isUnique: false,
+            isNullable: true,
+          },
+          {
+            name: 'prateleira',
+            type: 'varchar(255)',
+            isUnique: false,
+            isNullable: true,
+          },
+          {
+            name: 'qntd',
+            type: 'varchar(8)',
+            isUnique: false,
+            isNullable: true,
+          },
           {
             name: 'dt_criacao',
             type: 'timestamp',

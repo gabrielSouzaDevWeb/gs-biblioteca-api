@@ -27,9 +27,9 @@ export class Emprestimo extends AbstractEntity implements IAbstractColumns {
   // @Column({ name: 'exercicio' })
   // exercicio: number;
 
-  @ManyToOne(() => Aluno, (aluno) => aluno.salas)
+  @ManyToOne(() => Aluno, (aluno) => aluno.emprestimos)
   @JoinColumn({
-    name: 'id_emprestimo_livros',
+    name: 'id_aluno',
     referencedColumnName: 'idPrivado',
   })
   aluno?: Aluno;
@@ -38,6 +38,6 @@ export class Emprestimo extends AbstractEntity implements IAbstractColumns {
     () => EmprestimoLivros,
     (emprestimoLivros) => emprestimoLivros.emprestimo,
   )
-  @JoinColumn({ name: 'livroEmprestado', referencedColumnName: '' })
-  livrosEmprestado: Emprestimo[];
+  @JoinColumn({ name: 'livroEmprestado', referencedColumnName: 'idPrivado' })
+  livrosEmprestado: EmprestimoLivros[];
 }
