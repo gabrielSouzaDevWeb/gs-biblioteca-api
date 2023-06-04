@@ -7,8 +7,8 @@ export class Livro extends AbstractEntity {
   @Column({ name: 'nom_livro' })
   nomLivro: string;
 
-  @Column({ name: 'autor' })
-  autor: string;
+  @Column({ name: 'nom_autor' })
+  nomAutor: string;
 
   @Column({ name: 'genero' })
   genero: string;

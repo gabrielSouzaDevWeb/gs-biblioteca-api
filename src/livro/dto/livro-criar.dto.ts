@@ -11,7 +11,7 @@ export class CriarLivroDto {
 
   @IsString()
   @IsNotEmpty()
-  categoria: string;
+  genero: string;
 
   @IsOptional()
   @IsString()

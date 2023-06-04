@@ -18,7 +18,7 @@ export class createTbLivro1683556982985 implements MigrationInterface {
           {
             name: 'id_publico',
             type: 'varchar(255)',
-            // isNullable: false,
+            isNullable: true,
             isUnique: true,
           },
           {
@@ -40,7 +40,7 @@ export class createTbLivro1683556982985 implements MigrationInterface {
             isNullable: true,
           },
           {
-            name: 'autor',
+            name: 'nom_autor',
             type: 'varchar(255)',
             isUnique: false,
             isNullable: true,

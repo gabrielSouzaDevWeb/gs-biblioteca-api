@@ -12,7 +12,7 @@ export class AtualizarLivroDto extends AtualizarDTO {
 
   @IsString()
   @IsNotEmpty()
-  categoria: string;
+  genero: string;
 
   @IsOptional()
   @IsString()
