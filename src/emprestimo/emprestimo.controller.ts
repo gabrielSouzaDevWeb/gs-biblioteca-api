@@ -69,6 +69,26 @@ export class EmprestimoController {
       });
   }
 
+  @Get('by-idAluno')
+  async consultarEmprestimoPorIdAluno(
+    @Res() res,
+    @Req() req,
+    @Query() query: { [key: string]: string | number },
+  ) {
+    const { idAluno } = query;
+
+    await this.service
+      .consultarEmprestimoIdAluno(idAluno)
+      .then((result) => {
+        res
+          .status(HttpStatus.OK)
+          .json({ message: 'Consulta realizada com sucesso!!', data: result });
+      })
+      .catch((err) => {
+        throw new BadRequestException(err);
+      });
+  }
+
   @Put('atualizar/:idPrivado')
   async atualizarEmprestimo(
     @Res() res,

@@ -1,7 +1,7 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { Emprestimo } from 'src/common/entity/emprestimo.entity';
 import { IEmprestimo } from 'src/common/interfaces/emprestimo.interface';
-import { Repository } from 'typeorm';
+import { Repository, SelectQueryBuilder } from 'typeorm';
 
 @Injectable()
 export class EmprestimoService {
@@ -9,6 +9,20 @@ export class EmprestimoService {
     @Inject('EMPRESTIMO_REPOSITORY')
     private emprestimoRepository: Repository<Emprestimo>,
   ) {}
+
+  async consultarEmprestimoIdAluno(idAluno): Promise<IEmprestimo> {
+    //TODO: otimizar essa consulta
+    const emprestimo: SelectQueryBuilder<Emprestimo> =
+      this.emprestimoRepository.createQueryBuilder('emprestimo');
+    emprestimo.leftJoinAndSelect(
+      'emprestimo.livrosEmprestado',
+      'livrosEmprestado',
+    );
+    emprestimo.leftJoinAndSelect('livrosEmprestado.livro', 'livro');
+
+    return await emprestimo.where({ idAluno }).getMany();
+  }
+
   async consultarEmprestimo(query: {
     [key: string]: string | number;
   }): Promise<{ result: Array<IEmprestimo>; count: number }> {
