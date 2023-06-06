@@ -54,7 +54,7 @@ export class AlunoController {
       });
   }
 
-  @Post('aluno-alugar/:idPrivadoAluno/livro/:idPrivadoLivro')
+  @Post('aluno-emprestimo/:idPrivadoAluno/livro/:idPrivadoLivro')
   async alunoAlugarlivro(
     @Res() res,
     @Req() req,

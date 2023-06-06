@@ -13,7 +13,7 @@ const LIVRO_REPOSITORY = {
 @Module({
   controllers: [LivroController],
   imports: [DatabaseModule],
-  exports: [LIVRO_REPOSITORY],
+  exports: [LIVRO_REPOSITORY, LivroService],
   providers: [LIVRO_REPOSITORY, LivroService],
 })
 export class LivroModule {}

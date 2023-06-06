@@ -6,7 +6,7 @@ import { Emprestimo } from './../common/entity/emprestimo.entity';
 import { EmprestimoController } from './emprestimo.controller';
 import { EmprestimoService } from './emprestimo.service';
 
-const EMPRESTIMO_REPOSITORY = {
+export const EMPRESTIMO_REPOSITORY = {
   provide: 'EMPRESTIMO_REPOSITORY',
   useFactory: (dataSource: DataSource) => dataSource.getRepository(Emprestimo),
   inject: ['DATA_SOURCE'],
@@ -15,5 +15,6 @@ const EMPRESTIMO_REPOSITORY = {
   controllers: [EmprestimoController],
   imports: [DatabaseModule, LivroEmprestadoModule],
   providers: [EMPRESTIMO_REPOSITORY, EmprestimoService],
+  exports: [EmprestimoService],
 })
 export class EmprestimoModule {}
