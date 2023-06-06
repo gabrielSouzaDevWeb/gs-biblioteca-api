@@ -16,8 +16,8 @@ export class AlunoSalas extends AbstractEntity implements IAbstractColumns {
   // sala: Sala;
 
   //TODO: trocar para ano_letivo
-  @Column({ name: 'exercicio' })
-  exercicio: number;
+  @Column({ name: 'ano_letivo' })
+  anoLetivo: number;
 
   @ManyToOne(() => Aluno, (aluno) => aluno.salas)
   @JoinColumn({ name: 'id_sala', referencedColumnName: 'idPrivado' })

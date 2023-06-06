@@ -16,7 +16,7 @@ export class Emprestimo extends AbstractEntity implements IAbstractColumns {
   status: number;
 
   //FIXME: qntd_livros_alugados
-  @Column({ name: 'qntds_livros_alugados' })
+  @Column({ name: 'qntd_livros_alugados' })
   qntdLivrosAlugados: number;
 
   // @OneToMany(() => AlunoSalas, (alunoSalas) => alunoSalas.idPrivado)
