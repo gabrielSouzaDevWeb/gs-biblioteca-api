@@ -20,7 +20,7 @@ export class createTbEmprestimoLivros1683556137415
           {
             name: 'id_publico',
             type: 'varchar(255)',
-            // isNullable: false,
+            isNullable: true,
             isUnique: true,
           },
           { name: 'id_livro_emprestado', type: 'int', isNullable: false },
