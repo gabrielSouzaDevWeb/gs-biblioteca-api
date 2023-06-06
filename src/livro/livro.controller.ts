@@ -12,9 +12,9 @@ import {
   Req,
   Res,
 } from '@nestjs/common';
-import { AtualizarLivroDto } from './dto/livro-atualizar.dto';
-import { CriarLivroDto } from './dto/livro-criar.dto';
-import { ILivro } from './interface/livro.interface';
+import { CriarLivroDto } from 'src/common/dto/livro-criar.dto';
+import { AtualizarLivroDto } from '../common/dto/livro-atualizar.dto';
+import { ILivro } from '../common/interfaces/livro.interface';
 import { LivroService } from './livro.service';
 // import { Query } from 'typeorm/driver/Query';
 const entity = 'livro';

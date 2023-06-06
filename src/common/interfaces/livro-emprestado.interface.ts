@@ -1,5 +1,5 @@
-import { IAluno } from 'src/aluno/interface/aluno-criar.interface';
-import { ILivro } from 'src/livro/interface/livro.interface';
+import { IAluno } from 'src/common/interfaces/aluno-criar.interface';
+import { ILivro } from 'src/common/interfaces/livro.interface';
 import { Timestamp } from 'typeorm';
 
 export interface ILivroEmprestado {

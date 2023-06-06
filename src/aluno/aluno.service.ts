@@ -2,11 +2,11 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { LivroEmprestadoService } from './../livro-emprestado/livro-emprestado.service';
 
 import { Inject } from '@nestjs/common/decorators';
+import { CriarAlunoDto } from 'src/common/dto/aluno-criar.dto';
 import { Repository } from 'typeorm';
+import { AtualizarAlunoDto } from '../common/dto/aluno-atualizar.dto';
 import { Aluno } from '../common/entity/aluno.entity';
-import { AtualizarAlunoDto } from './dto/aluno-atualizar.dto';
-import { CriarAlunoDto } from './dto/aluno-criar.dto';
-import { IAluno } from './interface/aluno-criar.interface';
+import { IAluno } from '../common/interfaces/aluno-criar.interface';
 
 @Injectable()
 export class AlunoService {

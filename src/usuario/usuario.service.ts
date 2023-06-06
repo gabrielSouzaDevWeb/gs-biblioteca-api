@@ -1,8 +1,8 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { Usuarios } from './entity/usuarios.entity';
-import { NivelAcesso } from './enum/niveisAcesso.enum';
-import { IUsuario } from './interface/usuario.interface';
+import { Usuarios } from '../common/entity/usuarios.entity';
+import { NivelAcesso } from '../common/enum/niveisAcesso.enum';
+import { IUsuario } from '../common/interfaces/usuario.interface';
 
 @Injectable()
 export class UsuarioService {

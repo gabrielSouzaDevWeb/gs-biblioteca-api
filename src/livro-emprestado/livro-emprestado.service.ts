@@ -4,7 +4,7 @@ import { Aluno } from 'src/common/entity/aluno.entity';
 import { Livro } from 'src/common/entity/livro.entity';
 import { Repository } from 'typeorm';
 import { EmprestimoLivros } from '../common/entity/livro-emprestado.entity';
-import { ILivroEmprestado } from './interface/livro-emprestado.interface';
+import { ILivroEmprestado } from '../common/interfaces/livro-emprestado.interface';
 
 @Injectable()
 export class LivroEmprestadoService {

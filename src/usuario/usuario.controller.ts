@@ -8,7 +8,7 @@ import {
   Req,
   Res,
 } from '@nestjs/common';
-import { CriarUsuarioDto } from './dto/usuario.dto';
+import { CriarUsuarioDto } from '../common/dto/usuario.dto';
 import { UsuarioService } from './usuario.service';
 
 @Controller('usuario')
