@@ -1,13 +1,20 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { AlunoService } from 'src/aluno/aluno.service';
+import { Aluno, Livro } from 'src/common/entity';
 import { Emprestimo } from 'src/common/entity/emprestimo.entity';
 import { IEmprestimo } from 'src/common/interfaces/emprestimo.interface';
-import { Repository, SelectQueryBuilder } from 'typeorm';
+import { LivroEmprestadoService } from 'src/livro-emprestado/livro-emprestado.service';
+import { EntityManager, Repository, SelectQueryBuilder } from 'typeorm';
+import { LivroService } from './../livro/livro.service';
 
 @Injectable()
 export class EmprestimoService {
   constructor(
     @Inject('EMPRESTIMO_REPOSITORY')
     private emprestimoRepository: Repository<Emprestimo>,
+    private readonly livroEmprestadoService: LivroEmprestadoService,
+    private readonly livroService: LivroService,
+    private readonly alunoService: AlunoService,
   ) {}
 
   async consultarEmprestimoIdAluno(idAluno): Promise<IEmprestimo> {
@@ -157,5 +164,39 @@ export class EmprestimoService {
 
   async deletar(idPrivado: number): Promise<void> {
     await this.emprestimoRepository.softDelete(idPrivado);
+  }
+
+  async alunoAlugarlivro(
+    idPrivadoAluno: number,
+    idPrivadoLivro: number,
+  ): Promise<any> {
+    //TODO: Criar emprestimo
+    //TODO: Relacionar emprestimo com aluno
+    //TODO: Relacionar livro com emprestimo na tabela emprestimos-livros (many-to-many)
+    //TODO: Criar isso tudo dentro de uma transaction
+    const repository = this.emprestimoRepository.manager;
+
+    const retorno = await repository.transaction(
+      async (transactionManager: EntityManager) => {
+        const livro = await transactionManager
+          .getRepository(Livro)
+          .find({ where: { idPrivado: idPrivadoLivro } });
+        // const livro = await this.livroService.consultarLivroPorChaveValor(
+        //   'idPrivado',
+        //   idPrivadoLivro,
+        // );
+        // const aluno = await this.alunoService.consultarAlunoPorChaveValor(
+        //   'idPrivado',
+        //   idPrivadoAluno,
+        // );
+        const aluno = await transactionManager
+          .getRepository(Aluno)
+          .find({ where: { idPrivado: idPrivadoAluno } });
+        return { livro, aluno };
+      },
+    );
+
+    console.log(retorno);
+    return retorno;
   }
 }

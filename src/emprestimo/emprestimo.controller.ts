@@ -69,6 +69,25 @@ export class EmprestimoController {
       });
   }
 
+  @Post('aluno/:idPrivadoAluno/livro/:idPrivadoLivro')
+  async emprestimo(
+    @Res() res,
+    @Req() req,
+    @Param('idPrivadoAluno') idPrivadoAluno: number,
+    @Param('idPrivadoLivro') idPrivadoLivro: number,
+  ) {
+    await this.service
+      .alunoAlugarlivro(idPrivadoAluno, idPrivadoLivro)
+      .then((result) => {
+        res
+          .status(HttpStatus.OK)
+          .json({ message: 'Aluguel registrado com sucesso!!', data: result });
+      })
+      .catch((err) => {
+        throw new BadRequestException(err);
+      });
+  }
+
   @Get('by-idAluno')
   async consultarEmprestimoPorIdAluno(
     @Res() res,

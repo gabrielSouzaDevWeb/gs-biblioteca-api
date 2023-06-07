@@ -1,7 +1,4 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { EmprestimoService } from './../emprestimo/emprestimo.service';
-import { LivroEmprestadoService } from './../livro-emprestado/livro-emprestado.service';
-import { LivroService } from './../livro/livro.service';
 
 import { Inject } from '@nestjs/common/decorators';
 import { CriarAlunoDto } from 'src/common/dto/aluno-criar.dto';
@@ -15,9 +12,6 @@ export class AlunoService {
   constructor(
     @Inject('ALUNO_REPOSITORY')
     private alunoRepository: Repository<Aluno>,
-    private readonly emprestimoService: EmprestimoService,
-    private readonly livroEmprestadoService: LivroEmprestadoService,
-    private readonly livroService: LivroService,
   ) {}
   async consultarAluno(query: {
     [key: string]: string | number;
@@ -98,21 +92,6 @@ export class AlunoService {
     } catch (error) {
       throw new BadRequestException(error);
     }
-  }
-
-  async alunoAlugarlivro(
-    idPrivadoAluno: number,
-    idPrivadoLivro: number,
-  ): Promise<any> {
-    //TODO: Criar emprestimo
-    //TODO: Relacionar emprestimo com aluno
-    //TODO: Relacionar livro com emprestimo na tabela emprestimos-livros (many-to-many)
-    const livroAlugado = await this.livroEmprestadoService.alugarLivro(
-      idPrivadoAluno,
-      idPrivadoLivro,
-    );
-
-    console.log(livroAlugado);
   }
 
   // async livrosAlugados(

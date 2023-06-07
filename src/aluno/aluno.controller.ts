@@ -54,25 +54,6 @@ export class AlunoController {
       });
   }
 
-  @Post('aluno-emprestimo/:idPrivadoAluno/livro/:idPrivadoLivro')
-  async alunoAlugarlivro(
-    @Res() res,
-    @Req() req,
-    @Param('idPrivadoAluno') idPrivadoAluno: number,
-    @Param('idPrivadoLivro') idPrivadoLivro: number,
-  ) {
-    await this.service
-      .alunoAlugarlivro(idPrivadoAluno, idPrivadoLivro)
-      .then((result) => {
-        res
-          .status(HttpStatus.OK)
-          .json({ message: 'Aluguel registrado com sucesso!!', data: result });
-      })
-      .catch((err) => {
-        throw new BadRequestException(err);
-      });
-  }
-
   @Get()
   async consultarAluno(
     @Res() res,
