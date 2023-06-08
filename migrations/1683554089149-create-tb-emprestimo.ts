@@ -23,7 +23,6 @@ export class createTbEmprestimo1683554089149 implements MigrationInterface {
           {
             name: 'id_aluno',
             type: 'int',
-            isUnique: true,
             isNullable: false,
           },
           // {
@@ -36,14 +35,12 @@ export class createTbEmprestimo1683554089149 implements MigrationInterface {
             name: 'status',
             type: 'int',
             isNullable: true,
-            isUnique: true,
           },
 
           {
             name: 'qntd_livros_alugados',
             type: 'int',
             isNullable: true,
-            isUnique: true,
           },
           {
             name: 'dt_criacao',

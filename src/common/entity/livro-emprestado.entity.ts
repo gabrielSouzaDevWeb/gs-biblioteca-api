@@ -14,9 +14,6 @@ export class EmprestimoLivros extends AbstractEntity {
   @Column({ name: 'status_emprestimo' })
   statusLocacao: number;
 
-  @Column({ name: 'dt_locacao' })
-  dtLocacao: Date;
-
   @CreateDateColumn({ name: 'dt_renovacao' })
   dtRenovacao: Date;
 
@@ -24,7 +21,7 @@ export class EmprestimoLivros extends AbstractEntity {
   dtVencimento: Date;
 
   @Column({ name: 'renovacoes' }) //quantas vezes a locação foi renovada
-  renovacao: number;
+  renovacoes: number;
 
   // @ManyToOne(() => Aluno, (aluno) => aluno.idPrivado)
   // @JoinColumn({ name: 'aluno_locador' })

@@ -26,11 +26,15 @@ export class createTbEmprestimoLivros1683556137415
           { name: 'id_livro_emprestado', type: 'int', isNullable: false },
           { name: 'id_emprestimo', type: 'int', isNullable: false },
           { name: 'status_emprestimo', type: 'int', isNullable: false },
-          { name: 'dt_emprestimo', type: 'timestamp', isNullable: false },
+          {
+            name: 'dt_emprestimo',
+            type: 'timestamp',
+            isNullable: false,
+            default: 'now()',
+          },
           { name: 'dt_renovacao', type: 'timestamp', isNullable: true },
           { name: 'renovacoes', type: 'int', isNullable: false }, //quantas vezes o emprestimo foi renovada
           { name: 'dt_vencimento', type: 'timestamp', isNullable: false },
-          { name: 'dt_locacao', type: 'timestamp', isNullable: false },
           {
             name: 'dt_criacao',
             type: 'timestamp',

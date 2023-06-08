@@ -5,7 +5,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { AlunoService } from 'src/aluno/aluno.service';
-import { Aluno, Livro } from 'src/common/entity';
+import { EmprestimoLivros, Livro } from 'src/common/entity';
 import { Emprestimo } from 'src/common/entity/emprestimo.entity';
 import { LIVRO_EMPRESTADO_STATUS } from 'src/common/enum/livro-emprestado.enum';
 import { IEmprestimo } from 'src/common/interfaces/emprestimo.interface';
@@ -83,7 +83,6 @@ export class EmprestimoService {
         emprestimos.andWhere(`emprestimo.${key} = ${query[key]}`);
       }
       const result = await emprestimos.getMany();
-      // console.log(result);
       const count = await emprestimos.getCount();
       return { result, count };
     } catch (error) {
@@ -176,35 +175,18 @@ export class EmprestimoService {
     idPrivadoAluno: number,
     idsPrivadoLivro: ReadonlyArray<number>,
   ): Promise<any> {
-    //
-    /**
-     * TODO: Verificar se o livro possuí exemplares disponiveis
-     *
-     *
-     * TODO: verificar se esse aluno já possuí livros emprestados
-     * se sim verificar status dos livros.
-     * um aluno não pode pegar mais de três livros emprestados por vez
-     * um aluno não pode ter mais de três livros emprestados ao mesmo tempo
-     * ...
-     *
-     */
-    //TODO: Criar emprestimo
-    //TODO: Relacionar emprestimo com aluno
-    //TODO: Relacionar livro com emprestimo na tabela emprestimos-livros (many-to-many)
-    //TODO: Criar isso tudo dentro de uma transaction
-    // const emprestimo: EmprestimoCriarDto = { idAluno: idPrivadoAluno };
     const repository = this.emprestimoRepository.manager;
 
     const retorno = await repository.transaction(
       async (transactionManager: EntityManager) => {
         try {
-          let novoEmprestimo;
-
-          const alunoEmpretimos = await transactionManager
-            .getRepository(Emprestimo)
-            .find({ where: { idAluno: idPrivadoAluno } });
-
-          const livros = await transactionManager
+          // let novoEmprestimo;
+          if (idsPrivadoLivro.length > 3) {
+            throw new BadRequestException(
+              `Não é possível pegar mais de três livros emprestado!`,
+            );
+          }
+          const livros: Array<Livro> = await transactionManager
             .getRepository(Livro)
             .createQueryBuilder('livro')
             .where('livro.idPrivado IN (:...idsPrivadoLivro)', {
@@ -212,38 +194,102 @@ export class EmprestimoService {
             })
             .getMany();
 
-          if (!alunoEmpretimos) {
-            novoEmprestimo = await transactionManager
-              .getRepository(Emprestimo)
-              .insert({
-                idAluno: idPrivadoAluno,
-                status: LIVRO_EMPRESTADO_STATUS.EMPRESTADO,
-                qntdLivrosAlugados: idsPrivadoLivro.length,
-              });
+          if (livros && livros.length === 0) {
+            throw new BadRequestException(
+              `O(os) livro(os) não foram encontrado(os). livros: ${idsPrivadoLivro}`,
+            );
           }
 
-          // const livro = await transactionManager
-          //   .getRepository(Livro)
-          //   .find({ where: { idPrivado: idPrivadoLivro } });
-          // const livro = await this.livroService.consultarLivroPorChaveValor(
-          //   'idPrivado',
-          //   idPrivadoLivro,
-          // );
-          // const aluno = await this.alunoService.consultarAlunoPorChaveValor(
-          //   'idPrivado',
-          //   idPrivadoAluno,
-          // );
-          const aluno = await transactionManager
-            .getRepository(Aluno)
-            .findOne({ where: { idPrivado: idPrivadoAluno } });
-          return { livros, aluno, novoEmprestimo };
+          const alunoEmpretimos: Array<Emprestimo> = await transactionManager
+            .getRepository(Emprestimo)
+            .find({
+              where: { idAluno: idPrivadoAluno },
+              relations: { livrosEmprestado: true, aluno: true },
+            });
+          const idsLivrosEmprestados: Array<number> = [];
+
+          for (const alunoEmpretimo of alunoEmpretimos) {
+            for (const livroEmprestado of alunoEmpretimo.livrosEmprestado) {
+              console.log(alunoEmpretimo.livrosEmprestado.length);
+              if (
+                [
+                  LIVRO_EMPRESTADO_STATUS.EMPRESTADO,
+                  LIVRO_EMPRESTADO_STATUS.EMPRESTADO_RENOVADO,
+                  LIVRO_EMPRESTADO_STATUS.EM_ATRASO,
+                ].includes(livroEmprestado.statusLocacao)
+              ) {
+                idsLivrosEmprestados.push(livroEmprestado.idPrivado);
+              }
+            }
+          }
+
+          if (
+            idsLivrosEmprestados &&
+            idsLivrosEmprestados.length + idsPrivadoLivro.length > 3
+          ) {
+            throw new BadRequestException(
+              `O aluno ${alunoEmpretimos[0].aluno.nome} possui ${idsLivrosEmprestados.length} livros emprestados e que ainda não devolveu.`,
+            );
+          }
+
+          const emprestimoLivros: Array<EmprestimoLivros> =
+            await transactionManager
+              .getRepository(EmprestimoLivros)
+              .createQueryBuilder('emprestimoLivros')
+              .leftJoinAndSelect('emprestimoLivros.livro', 'livro')
+              .where(
+                'emprestimoLivros.idLivroEmprestado IN (:...idsPrivadoLivro)',
+                {
+                  idsPrivadoLivro,
+                },
+              )
+              .getMany();
+
+          //verificar se há exemplar disponível para ser emprestado
+
+          if (emprestimoLivros && emprestimoLivros.length > 0) {
+            for (const emprestimoLivro of emprestimoLivros) {
+              for (const livro of livros) {
+                if (
+                  emprestimoLivro.idLivroEmprestado === livro.idPrivado &&
+                  emprestimoLivros.length === livro.unidades
+                ) {
+                  throw new BadRequestException(
+                    `o livro ${livro.nomLivro} não possui exemplar disponível no momento.`,
+                  );
+                }
+              }
+            }
+          }
+          if (emprestimoLivros) {
+            throw emprestimoLivros;
+          }
+
+          const { generatedMaps: novosEmprestimosCriados } =
+            await transactionManager.getRepository(Emprestimo).insert({
+              idAluno: idPrivadoAluno,
+              status: LIVRO_EMPRESTADO_STATUS.EMPRESTADO,
+            } as Partial<Emprestimo>);
+
+          const hoje = new Date();
+          const dtVencimento = new Date(hoje.setDate(hoje.getDate() + 7));
+          for (const livro of livros) {
+            await transactionManager.getRepository(EmprestimoLivros).insert({
+              idEmprestimo: novosEmprestimosCriados[0].idPrivado,
+              idLivroEmprestado: livro.idPrivado,
+              statusLocacao: LIVRO_EMPRESTADO_STATUS.EMPRESTADO,
+              dtVencimento,
+              renovacoes: 0,
+            } as Partial<EmprestimoLivros>);
+          }
+
+          return { livros, novosEmprestimosCriados };
         } catch (error) {
           throw new InternalServerErrorException(error);
         }
       },
     );
 
-    console.log(retorno);
     return retorno;
   }
 }

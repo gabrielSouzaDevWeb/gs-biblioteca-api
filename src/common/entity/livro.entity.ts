@@ -27,7 +27,7 @@ export class Livro extends AbstractEntity {
   qntdPaginas: string;
 
   @Column({ name: 'qntd' })
-  unidades: string;
+  unidades: number;
   // @Column({ name: 'unidades_alugados' })
   // unidadesEmprestadas: string;
 

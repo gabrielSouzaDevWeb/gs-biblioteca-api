@@ -9,7 +9,7 @@ export interface ILivro {
   estante?: string;
   prateleira?: string;
   qntdPaginas: string;
-  unidades: string;
+  unidades: number;
   dtAlteracao?: Timestamp;
   dtCriacao?: Timestamp;
   dtDeletado?: Timestamp;

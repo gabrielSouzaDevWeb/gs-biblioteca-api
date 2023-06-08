@@ -16,8 +16,8 @@ export const databaseProviders = [
         migrations: [__dirname + './../../dist/migrations/*.js'],
         synchronize: false,
 
-        logger: 'advanced-console',
-        logging: 'all',
+        // logger: false,
+        logging: false,
       });
 
       return dataSource.initialize();
