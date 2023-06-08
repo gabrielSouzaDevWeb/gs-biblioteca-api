@@ -26,12 +26,12 @@ export class createTbEmprestimo1683554089149 implements MigrationInterface {
             isUnique: true,
             isNullable: false,
           },
-          {
-            name: 'id_emprestimo_livros',
-            type: 'int',
-            isUnique: true,
-            isNullable: false,
-          },
+          // {
+          //   name: 'id_emprestimo_livros',
+          //   type: 'int',
+          //   isUnique: true,
+          //   isNullable: false,
+          // },
           {
             name: 'status',
             type: 'int',

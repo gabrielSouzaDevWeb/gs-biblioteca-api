@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 
 import { Inject } from '@nestjs/common/decorators';
-import { CriarAlunoDto } from 'src/common/dto/aluno-criar.dto';
+import { CriarAlunoDto } from 'src/common/dto/criar-aluno.dto';
 import { Repository } from 'typeorm';
-import { AtualizarAlunoDto } from '../common/dto/aluno-atualizar.dto';
+import { AtualizarAlunoDto } from '../common/dto/atualizar-aluno.dto';
 import { Aluno } from '../common/entity/aluno.entity';
 import { IAluno } from '../common/interfaces/aluno-criar.interface';
 

@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Inject } from '@nestjs/common/decorators';
-import { CriarLivroDto } from 'src/common/dto/livro-criar.dto';
+import { CriarLivroDto } from 'src/common/dto/criar-livro.dto';
 import { Repository } from 'typeorm';
-import { AtualizarLivroDto } from '../common/dto/livro-atualizar.dto';
+import { AtualizarLivroDto } from '../common/dto/atualizar-livro.dto';
 import { Livro } from '../common/entity/livro.entity';
 import { ILivro } from '../common/interfaces/livro.interface';
 

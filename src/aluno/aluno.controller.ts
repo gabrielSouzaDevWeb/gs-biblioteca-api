@@ -14,8 +14,8 @@ import {
   Req,
   Res,
 } from '@nestjs/common/decorators/http/route-params.decorator';
-import { CriarAlunoDto } from 'src/common/dto/aluno-criar.dto';
-import { AtualizarAlunoDto } from '../common/dto/aluno-atualizar.dto';
+import { CriarAlunoDto } from 'src/common/dto/criar-aluno.dto';
+import { AtualizarAlunoDto } from '../common/dto/atualizar-aluno.dto';
 import { AlunoService } from './aluno.service';
 
 const entity = 'aluno';

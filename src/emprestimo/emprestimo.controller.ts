@@ -69,15 +69,15 @@ export class EmprestimoController {
       });
   }
 
-  @Post('aluno/:idPrivadoAluno/livro/:idPrivadoLivro')
+  @Post('aluno/:idPrivadoAluno')
   async emprestimo(
     @Res() res,
     @Req() req,
     @Param('idPrivadoAluno') idPrivadoAluno: number,
-    @Param('idPrivadoLivro') idPrivadoLivro: number,
+    @Body() payload: { livros: ReadonlyArray<number> },
   ) {
     await this.service
-      .alunoAlugarlivro(idPrivadoAluno, idPrivadoLivro)
+      .alunoAlugarlivro(idPrivadoAluno, payload.livros)
       .then((result) => {
         res
           .status(HttpStatus.OK)

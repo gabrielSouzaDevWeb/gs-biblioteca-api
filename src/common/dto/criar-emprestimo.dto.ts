@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNumber } from 'class-validator';
 
-export class CriarAlunoDto {
+export class EmprestimoCriarDto {
   @IsNotEmpty()
   @IsNumber()
   idAluno: number;

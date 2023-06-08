@@ -1,7 +1,13 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { AlunoService } from 'src/aluno/aluno.service';
 import { Aluno, Livro } from 'src/common/entity';
 import { Emprestimo } from 'src/common/entity/emprestimo.entity';
+import { LIVRO_EMPRESTADO_STATUS } from 'src/common/enum/livro-emprestado.enum';
 import { IEmprestimo } from 'src/common/interfaces/emprestimo.interface';
 import { LivroEmprestadoService } from 'src/livro-emprestado/livro-emprestado.service';
 import { EntityManager, Repository, SelectQueryBuilder } from 'typeorm';
@@ -168,31 +174,72 @@ export class EmprestimoService {
 
   async alunoAlugarlivro(
     idPrivadoAluno: number,
-    idPrivadoLivro: number,
+    idsPrivadoLivro: ReadonlyArray<number>,
   ): Promise<any> {
+    //
+    /**
+     * TODO: Verificar se o livro possuí exemplares disponiveis
+     *
+     *
+     * TODO: verificar se esse aluno já possuí livros emprestados
+     * se sim verificar status dos livros.
+     * um aluno não pode pegar mais de três livros emprestados por vez
+     * um aluno não pode ter mais de três livros emprestados ao mesmo tempo
+     * ...
+     *
+     */
     //TODO: Criar emprestimo
     //TODO: Relacionar emprestimo com aluno
     //TODO: Relacionar livro com emprestimo na tabela emprestimos-livros (many-to-many)
     //TODO: Criar isso tudo dentro de uma transaction
+    // const emprestimo: EmprestimoCriarDto = { idAluno: idPrivadoAluno };
     const repository = this.emprestimoRepository.manager;
 
     const retorno = await repository.transaction(
       async (transactionManager: EntityManager) => {
-        const livro = await transactionManager
-          .getRepository(Livro)
-          .find({ where: { idPrivado: idPrivadoLivro } });
-        // const livro = await this.livroService.consultarLivroPorChaveValor(
-        //   'idPrivado',
-        //   idPrivadoLivro,
-        // );
-        // const aluno = await this.alunoService.consultarAlunoPorChaveValor(
-        //   'idPrivado',
-        //   idPrivadoAluno,
-        // );
-        const aluno = await transactionManager
-          .getRepository(Aluno)
-          .find({ where: { idPrivado: idPrivadoAluno } });
-        return { livro, aluno };
+        try {
+          let novoEmprestimo;
+
+          const alunoEmpretimos = await transactionManager
+            .getRepository(Emprestimo)
+            .find({ where: { idAluno: idPrivadoAluno } });
+
+          const livros = await transactionManager
+            .getRepository(Livro)
+            .createQueryBuilder('livro')
+            .where('livro.idPrivado IN (:...idsPrivadoLivro)', {
+              idsPrivadoLivro,
+            })
+            .getMany();
+
+          if (!alunoEmpretimos) {
+            novoEmprestimo = await transactionManager
+              .getRepository(Emprestimo)
+              .insert({
+                idAluno: idPrivadoAluno,
+                status: LIVRO_EMPRESTADO_STATUS.EMPRESTADO,
+                qntdLivrosAlugados: idsPrivadoLivro.length,
+              });
+          }
+
+          // const livro = await transactionManager
+          //   .getRepository(Livro)
+          //   .find({ where: { idPrivado: idPrivadoLivro } });
+          // const livro = await this.livroService.consultarLivroPorChaveValor(
+          //   'idPrivado',
+          //   idPrivadoLivro,
+          // );
+          // const aluno = await this.alunoService.consultarAlunoPorChaveValor(
+          //   'idPrivado',
+          //   idPrivadoAluno,
+          // );
+          const aluno = await transactionManager
+            .getRepository(Aluno)
+            .findOne({ where: { idPrivado: idPrivadoAluno } });
+          return { livros, aluno, novoEmprestimo };
+        } catch (error) {
+          throw new InternalServerErrorException(error);
+        }
       },
     );
 
