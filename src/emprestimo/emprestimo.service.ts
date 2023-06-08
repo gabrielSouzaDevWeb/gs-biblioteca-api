@@ -206,11 +206,18 @@ export class EmprestimoService {
               where: { idAluno: idPrivadoAluno },
               relations: { livrosEmprestado: true, aluno: true },
             });
+
+          const idsPrivadosLivrosEmprestadosAluno: Array<number> = [];
           const idsLivrosEmprestados: Array<number> = [];
+          const arrStatusIndisponiveis: ReadonlyArray<LIVRO_EMPRESTADO_STATUS> =
+            [
+              LIVRO_EMPRESTADO_STATUS.EMPRESTADO,
+              LIVRO_EMPRESTADO_STATUS.EMPRESTADO_RENOVADO,
+              LIVRO_EMPRESTADO_STATUS.EM_ATRASO,
+            ];
 
           for (const alunoEmpretimo of alunoEmpretimos) {
             for (const livroEmprestado of alunoEmpretimo.livrosEmprestado) {
-              console.log(alunoEmpretimo.livrosEmprestado.length);
               if (
                 [
                   LIVRO_EMPRESTADO_STATUS.EMPRESTADO,
@@ -219,7 +226,17 @@ export class EmprestimoService {
                 ].includes(livroEmprestado.statusLocacao)
               ) {
                 idsLivrosEmprestados.push(livroEmprestado.idPrivado);
+                idsPrivadosLivrosEmprestadosAluno.push(
+                  livroEmprestado.idLivroEmprestado,
+                );
               }
+            }
+          }
+          for (const idPrivadoLivroEmprestadoAluno of idsPrivadosLivrosEmprestadosAluno) {
+            if (idsPrivadoLivro.includes(idPrivadoLivroEmprestadoAluno)) {
+              throw new BadRequestException(
+                `Não é permitido um aluno pegar emprestado mais de um exemplar do mesmo livro.`,
+              );
             }
           }
 
@@ -246,23 +263,37 @@ export class EmprestimoService {
               .getMany();
 
           //verificar se há exemplar disponível para ser emprestado
-
+          let quantidadeDeLivrosDisponivei: number = 0;
+          // const emprestimoLivroComStatusD
+          //logica furada
+          //FIXME:
+          /**
+           * FIXME: emprestimoLivros.length >= livro.unidades &&
+                  emprestimoLivro.idLivroEmprestado === livro.idPrivado &&
+                  arrStatusIndisponiveis.includes(emprestimoLivro.statusLocacao)
+           */
           if (emprestimoLivros && emprestimoLivros.length > 0) {
             for (const emprestimoLivro of emprestimoLivros) {
               for (const livro of livros) {
                 if (
+                  emprestimoLivros.length >= livro.unidades &&
                   emprestimoLivro.idLivroEmprestado === livro.idPrivado &&
-                  emprestimoLivros.length === livro.unidades
+                  arrStatusIndisponiveis.includes(emprestimoLivro.statusLocacao)
                 ) {
-                  throw new BadRequestException(
-                    `o livro ${livro.nomLivro} não possui exemplar disponível no momento.`,
-                  );
+                  console.log(livro.idPrivado, emprestimoLivro.idPrivado, 275);
+
+                  continue;
                 }
+                quantidadeDeLivrosDisponivei++;
+                console.log(livro.idPrivado, emprestimoLivro.idPrivado, 278);
               }
             }
           }
-          if (emprestimoLivros) {
-            throw emprestimoLivros;
+          console.log(quantidadeDeLivrosDisponivei, 'count');
+          if (quantidadeDeLivrosDisponivei === 0) {
+            throw new Error(
+              'o livro não possui exemplar disponível no momento.',
+            );
           }
 
           const { generatedMaps: novosEmprestimosCriados } =
@@ -285,6 +316,7 @@ export class EmprestimoService {
 
           return { livros, novosEmprestimosCriados };
         } catch (error) {
+          console.log(error, 'error');
           throw new InternalServerErrorException(error);
         }
       },
