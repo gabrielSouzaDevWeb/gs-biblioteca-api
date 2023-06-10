@@ -34,21 +34,21 @@ export class EmprestimoController {
   //     });
   // }
 
-  @Post()
-  async criarEmprestimo(@Body() emprestimo: any, @Req() req, @Res() res) {
-    // return res.status(200).json(emprestimo);
-    console.log('touch');
-    await this.service
-      .criarEmprestimo(emprestimo, req)
-      .then((result) =>
-        res
-          .status(HttpStatus.CREATED)
-          .json({ message: 'Cadastro criado com sucesso!', data: result }),
-      )
-      .catch((err) => {
-        throw new BadRequestException(err);
-      });
-  }
+  // @Post()
+  // async criarEmprestimo(@Body() emprestimo: any, @Req() req, @Res() res) {
+  //   // return res.status(200).json(emprestimo);
+  //   console.log('touch');
+  //   await this.service
+  //     .criarEmprestimo(emprestimo, req)
+  //     .then((result) =>
+  //       res
+  //         .status(HttpStatus.CREATED)
+  //         .json({ message: 'Cadastro criado com sucesso!', data: result }),
+  //     )
+  //     .catch((err) => {
+  //       throw new BadRequestException(err);
+  //     });
+  // }
 
   @Get()
   async consultarEmprestimo(
@@ -70,7 +70,7 @@ export class EmprestimoController {
   }
 
   @Post('aluno/:idPrivadoAluno')
-  async emprestimo(
+  async criarEmprestimo(
     @Res() res,
     @Req() req,
     @Param('idPrivadoAluno') idPrivadoAluno: number,

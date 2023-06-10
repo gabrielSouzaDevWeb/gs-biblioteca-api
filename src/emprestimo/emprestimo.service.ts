@@ -180,7 +180,6 @@ export class EmprestimoService {
     const retorno = await repository.transaction(
       async (transactionManager: EntityManager) => {
         try {
-          // let novoEmprestimo;
           if (idsPrivadoLivro.length > 3) {
             throw new BadRequestException(
               `Não é possível pegar mais de três livros emprestado!`,
@@ -195,9 +194,11 @@ export class EmprestimoService {
             .getMany();
 
           if (livros && livros.length === 0) {
-            throw new BadRequestException(
-              `O(os) livro(os) não foram encontrado(os). livros: ${idsPrivadoLivro}`,
-            );
+            const msg: string =
+              idsPrivadoLivro.length === 1
+                ? `O livro não foi encontrado. Id do livro: ${idsPrivadoLivro[0]}`
+                : `Os livros não foram encontrados. Id dos livro: ${idsPrivadoLivro}`;
+            throw new BadRequestException(msg);
           }
 
           const alunoEmpretimos: Array<Emprestimo> = await transactionManager
@@ -260,40 +261,39 @@ export class EmprestimoService {
                   idsPrivadoLivro,
                 },
               )
+              .andWhere(
+                `emprestimoLivros.statusLocacao IN (:...arrStatusIndisponiveis)`,
+                { arrStatusIndisponiveis },
+              )
               .getMany();
-
-          //verificar se há exemplar disponível para ser emprestado
-          let quantidadeDeLivrosDisponivei: number = 0;
-          // const emprestimoLivroComStatusD
-          //logica furada
-          //FIXME:
-          /**
-           * FIXME: emprestimoLivros.length >= livro.unidades &&
-                  emprestimoLivro.idLivroEmprestado === livro.idPrivado &&
-                  arrStatusIndisponiveis.includes(emprestimoLivro.statusLocacao)
-           */
+          const arrLivrosIndisponiveis: Array<Livro> = [];
           if (emprestimoLivros && emprestimoLivros.length > 0) {
             for (const emprestimoLivro of emprestimoLivros) {
               for (const livro of livros) {
                 if (
-                  emprestimoLivros.length >= livro.unidades &&
-                  emprestimoLivro.idLivroEmprestado === livro.idPrivado &&
-                  arrStatusIndisponiveis.includes(emprestimoLivro.statusLocacao)
+                  emprestimoLivros.filter(
+                    (item) => item.idLivroEmprestado === livro.idPrivado,
+                  ).length >= livro.unidades &&
+                  emprestimoLivro.idLivroEmprestado === livro.idPrivado
                 ) {
-                  console.log(livro.idPrivado, emprestimoLivro.idPrivado, 275);
-
-                  continue;
+                  arrLivrosIndisponiveis.push(livro);
                 }
-                quantidadeDeLivrosDisponivei++;
-                console.log(livro.idPrivado, emprestimoLivro.idPrivado, 278);
               }
             }
           }
-          console.log(quantidadeDeLivrosDisponivei, 'count');
-          if (quantidadeDeLivrosDisponivei === 0) {
-            throw new Error(
-              'o livro não possui exemplar disponível no momento.',
+          if (arrLivrosIndisponiveis.length != 0) {
+            const arrNomeLivros: Array<string> = arrLivrosIndisponiveis.map(
+              (livro) => livro.nomLivro,
             );
+            const arrNomeLivrosSemDuplicidade: Array<string> =
+              arrNomeLivros.filter(
+                (item, index) => arrNomeLivros.indexOf(item) === index,
+              );
+            const msg: string =
+              arrNomeLivrosSemDuplicidade.length === 1
+                ? `O livro ${arrLivrosIndisponiveis[0].nomLivro} não possui exemplar disponível no momento.`
+                : `Os livros ${arrNomeLivrosSemDuplicidade} não possuiem exemplares disponíveis no momento.`;
+            throw new Error(msg);
           }
 
           const { generatedMaps: novosEmprestimosCriados } =
