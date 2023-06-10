@@ -281,18 +281,21 @@ export class EmprestimoService {
               }
             }
           }
-          if (arrLivrosIndisponiveis.length != 0) {
-            const arrNomeLivros: Array<string> = arrLivrosIndisponiveis.map(
-              (livro) => livro.nomLivro,
+
+          const arrNomeLivros: Array<string> = arrLivrosIndisponiveis.map(
+            (livro) => livro.nomLivro,
+          );
+          const arrNomeLivrosSemDuplicidade: Array<string> =
+            arrNomeLivros.filter(
+              (item, index) => arrNomeLivros.indexOf(item) === index,
             );
-            const arrNomeLivrosSemDuplicidade: Array<string> =
-              arrNomeLivros.filter(
-                (item, index) => arrNomeLivros.indexOf(item) === index,
-              );
+          if (arrNomeLivrosSemDuplicidade.length != 0) {
             const msg: string =
               arrNomeLivrosSemDuplicidade.length === 1
                 ? `O livro ${arrLivrosIndisponiveis[0].nomLivro} não possui exemplar disponível no momento.`
-                : `Os livros ${arrNomeLivrosSemDuplicidade} não possuiem exemplares disponíveis no momento.`;
+                : `Os livros ${arrNomeLivrosSemDuplicidade.join(
+                    ', ',
+                  )} não possuem exemplares disponíveis no momento.`;
             throw new Error(msg);
           }
 
