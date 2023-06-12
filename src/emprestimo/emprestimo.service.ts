@@ -197,7 +197,7 @@ export class EmprestimoService {
             const msg: string =
               idsPrivadoLivro.length === 1
                 ? `O livro não foi encontrado. Id do livro: ${idsPrivadoLivro[0]}`
-                : `Os livros não foram encontrados. Id dos livro: ${idsPrivadoLivro}`;
+                : `Os livros não foram encontrados. Id dos livros: ${idsPrivadoLivro}`;
             throw new BadRequestException(msg);
           }
 
@@ -220,11 +220,7 @@ export class EmprestimoService {
           for (const alunoEmpretimo of alunoEmpretimos) {
             for (const livroEmprestado of alunoEmpretimo.livrosEmprestado) {
               if (
-                [
-                  LIVRO_EMPRESTADO_STATUS.EMPRESTADO,
-                  LIVRO_EMPRESTADO_STATUS.EMPRESTADO_RENOVADO,
-                  LIVRO_EMPRESTADO_STATUS.EM_ATRASO,
-                ].includes(livroEmprestado.statusLocacao)
+                arrStatusIndisponiveis.includes(livroEmprestado.statusLocacao)
               ) {
                 idsLivrosEmprestados.push(livroEmprestado.idPrivado);
                 idsPrivadosLivrosEmprestadosAluno.push(
