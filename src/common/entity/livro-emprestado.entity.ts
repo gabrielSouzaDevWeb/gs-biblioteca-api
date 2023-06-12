@@ -7,12 +7,13 @@ import {
   JoinColumn,
   ManyToOne,
 } from 'typeorm';
+import { LIVRO_EMPRESTADO_STATUS } from '../enum/livro-emprestado.enum';
 import { Emprestimo } from './emprestimo.entity';
 
 @Entity({ name: 'emprestimo_livros', orderBy: { dtCriacao: 'DESC' } })
 export class EmprestimoLivros extends AbstractEntity {
   @Column({ name: 'status_emprestimo' })
-  statusLocacao: number;
+  statusLocacao: LIVRO_EMPRESTADO_STATUS;
 
   @CreateDateColumn({ name: 'dt_renovacao' })
   dtRenovacao: Date;
