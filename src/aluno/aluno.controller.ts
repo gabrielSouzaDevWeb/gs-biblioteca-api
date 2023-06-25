@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpStatus,
+  InternalServerErrorException,
   Param,
   Post,
   Put,
@@ -14,8 +15,8 @@ import {
   Req,
   Res,
 } from '@nestjs/common/decorators/http/route-params.decorator';
-import { CriarAlunoDto } from 'src/common/dto/criar-aluno.dto';
-import { AtualizarAlunoDto } from '../common/dto/atualizar-aluno.dto';
+import { AtualizarAlunoDto, CriarAlunoDto } from '../common/dto/';
+import { IAluno } from '../common/interfaces/aluno-criar.interface';
 import { AlunoService } from './aluno.service';
 
 const entity = 'aluno';
@@ -24,33 +25,21 @@ const entity = 'aluno';
 export class AlunoController {
   constructor(private service: AlunoService) {}
 
-  // @Get('get-all')
-  // getAllRegistros(@Res() res, @Req() req) {
-  //   this.service
-  //     .getAll()
-  //     .then((data) =>
-  //       res
-  //         .status(HttpStatus.OK)
-  //         .json({ message: 'Consulta realizada!', data }),
-  //     )
-  //     .catch((err) => {
-  //       throw new Error(err);
-  //     });
-  // }
-
   @Post()
-  async criarAluno(@Body() aluno: CriarAlunoDto, @Req() req, @Res() res) {
-    // return res.status(200).json(aluno);
-    console.log('touch');
+  async criarAluno(
+    @Body() aluno: CriarAlunoDto,
+    @Req() req,
+    @Res() res,
+  ): Promise<any> {
     await this.service
-      .criarAluno(aluno, req)
-      .then((result) =>
+      .criarAluno(aluno)
+      .then((result: IAluno) => {
         res
           .status(HttpStatus.CREATED)
-          .json({ message: 'Cadastro criado com sucesso!', data: result }),
-      )
+          .json({ message: 'Cadastro criado com sucesso!', data: result });
+      })
       .catch((err) => {
-        throw new BadRequestException(err);
+        throw new InternalServerErrorException(err);
       });
   }
 
@@ -58,9 +47,8 @@ export class AlunoController {
   async consultarAluno(
     @Res() res,
     @Req() req,
-    @Query() query: { [key: string]: string | number },
+    @Query() query?: { [key: string]: string | number },
   ) {
-    console.log('touch');
     await this.service
       .consultarAluno(query)
       .then((result) => {
@@ -69,39 +57,9 @@ export class AlunoController {
           .json({ message: 'Consulta realizada com sucesso!!', data: result });
       })
       .catch((err) => {
-        throw new BadRequestException(err);
+        throw new InternalServerErrorException(err);
       });
   }
-
-  // @Get('detalhe')
-  // async pegarDetalhe(@Res() res, @Req() req, @Query() query) {
-  //   this.service
-  //     .livrosAlugados(req, query)
-  //     .then((result) => {
-  //       res
-  //         .status(HttpStatus.OK)
-  //         .json({ message: 'Consulta realizada com sucesso!!', data: result });
-  //     })
-  //     .catch((err) => {
-  //       throw new BadRequestException(err);
-  //     });
-  //   // setTimeout(() => {
-  //   //   return res.status(HttpStatus.OK).json({
-  //   //     message: 'Consulta realizada com sucesso!',
-  //   //     data: {
-  //   //       idPrivado: 1,
-  //   //       idPublico: '1',
-  //   //       nomLivro: '12 Regras para a vida',
-  //   //       nomAutor: 'Jordan B. Peterson',
-  //   //       categoria: 'Auto ajuda',
-  //   //       estante: 'suspense',
-  //   //       prateleira: '3',
-  //   //       paginas: 7,
-  //   //       unidades: 1,
-  //   //     },
-  //   //   });
-  //   // }, 1000);
-  // }
 
   @Put('atualizar/:idPrivado')
   async atualizarAluno(
@@ -112,7 +70,7 @@ export class AlunoController {
   ) {
     await this.service
       .atualizarAluno(id, aluno)
-      .then((result) => {
+      .then((result: IAluno) => {
         res
           .status(HttpStatus.OK)
           .json({ message: 'Aluno atualizado com sucesso!!', data: result });
@@ -124,7 +82,7 @@ export class AlunoController {
 
   @Delete('deletar/:idPrivado')
   async deletar(@Res() res, @Req() req, @Param('idPrivado') id: number) {
-    await this.service
+    return await this.service
       .deletar(id)
       .then((result) => {
         res

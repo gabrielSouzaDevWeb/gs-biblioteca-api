@@ -1,5 +1,5 @@
-import { AbstractEntity } from 'src/common/entity/abstract.entity';
 import { Column, Entity, JoinColumn, OneToMany } from 'typeorm';
+import { AbstractEntity } from './abstract.entity';
 import { EmprestimoLivros } from './livro-emprestado.entity';
 
 @Entity({ name: 'livro', orderBy: { dtCriacao: 'DESC' } })
@@ -41,5 +41,5 @@ export class Livro extends AbstractEntity {
     name: 'id_privado',
     referencedColumnName: 'id_livro_emprestado',
   })
-  emprestimoLivros: EmprestimoLivros[];
+  emprestimoLivros?: EmprestimoLivros[];
 }

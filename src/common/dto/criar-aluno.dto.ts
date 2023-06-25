@@ -56,4 +56,36 @@ export class CriarAlunoDto {
   // @IsNumber()
   @IsString()
   telResponsavel: string;
+
+  constructor(params: {
+    nome?: string;
+    matricula?: string;
+    registro?: string;
+    sala?: number;
+    rua?: string;
+    numero?: number;
+    complemento?: string;
+    bairro?: string;
+    cidade?: string;
+    uf?: string;
+    cep?: string;
+    email?: string;
+    tel?: string;
+    telResponsavel?: string;
+  }) {
+    this.nome = params?.nome;
+    this.matricula = params?.matricula;
+    this.registro = params?.registro;
+    this.sala = params?.sala;
+    this.rua = params?.rua;
+    this.numero = params?.numero;
+    this.complemento = params?.complemento;
+    this.bairro = params?.bairro;
+    this.cidade = params?.cidade;
+    this.uf = params?.uf;
+    this.cep = params?.cep;
+    this.email = params?.email;
+    this.tel = params?.tel;
+    this.telResponsavel = params?.telResponsavel;
+  }
 }

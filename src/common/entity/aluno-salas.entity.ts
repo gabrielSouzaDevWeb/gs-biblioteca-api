@@ -1,7 +1,6 @@
-import { Aluno } from 'src/common/entity/aluno.entity';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { AbstractEntity, Aluno } from '.';
 import { IAbstractColumns } from '../types/abstract-columns.type';
-import { AbstractEntity } from './abstract.entity';
 
 @Entity({ name: 'aluno_salas', orderBy: { dtCriacao: 'DESC' } })
 export class AlunoSalas extends AbstractEntity implements IAbstractColumns {

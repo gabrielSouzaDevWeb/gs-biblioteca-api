@@ -1,13 +1,12 @@
-import { AbstractEntity } from 'src/common/entity/abstract.entity';
-import { Livro } from 'src/common/entity/livro.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
+  Timestamp,
 } from 'typeorm';
-import { Emprestimo } from './emprestimo.entity';
+import { AbstractEntity, Emprestimo, Livro } from '.';
 
 @Entity({ name: 'emprestimo_livros', orderBy: { dtCriacao: 'DESC' } })
 export class EmprestimoLivros extends AbstractEntity {
@@ -15,12 +14,12 @@ export class EmprestimoLivros extends AbstractEntity {
   statusLocacao: number;
 
   @CreateDateColumn({ name: 'dt_renovacao' })
-  dtRenovacao: Date;
+  dtRenovacao: string | Timestamp | Date;
 
-  @Column({ name: 'dt_vencimento' })
-  dtVencimento: Date;
+  @CreateDateColumn({ name: 'dt_vencimento' })
+  dtVencimento: string | Timestamp | Date;
 
-  @Column({ name: 'renovacoes' }) //quantas vezes a locação foi renovada
+  @CreateDateColumn({ name: 'renovacoes' }) //quantas vezes a locação foi renovada
   renovacoes: number;
 
   // @ManyToOne(() => Aluno, (aluno) => aluno.idPrivado)
@@ -42,7 +41,7 @@ export class EmprestimoLivros extends AbstractEntity {
 
   @ManyToOne(() => Emprestimo, (emprestimo) => emprestimo.livrosEmprestado)
   @JoinColumn({ name: 'id_emprestimo', referencedColumnName: 'idPrivado' })
-  emprestimo: Emprestimo;
+  emprestimo?: Emprestimo;
 
   @ManyToOne(() => Livro, (livro) => livro.emprestimoLivros)
   @JoinColumn({

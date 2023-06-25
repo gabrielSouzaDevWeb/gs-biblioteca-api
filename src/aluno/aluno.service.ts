@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 
 import { Inject } from '@nestjs/common/decorators';
 import { CriarAlunoDto } from 'src/common/dto/criar-aluno.dto';
@@ -37,26 +41,28 @@ export class AlunoService {
       );
       alunos.leftJoinAndSelect('emprestimoLivros.livro', 'livro');
 
-      for (const key in query) {
-        if (camposConsultadosComILike.includes(key)) {
-          alunos.andWhere(`aluno.${key} ilike '%${query[key]}%'`);
-          continue;
+      if (query) {
+        for (const key in query) {
+          if (camposConsultadosComILike.includes(key)) {
+            alunos.andWhere(`aluno.${key} ilike '%${query[key]}%'`);
+            continue;
+          }
+          if (paginacao.includes(key)) {
+            const paginationOptions = {
+              //TODO implementar regra do all ou remover
+              [`page`]: alunos.skip(
+                Number(
+                  ((Number(query['page']) as number) - 1) *
+                    Number(query['take'] as number),
+                ) as number,
+              ),
+              [`take`]: alunos.take(Number(query['take'])),
+            };
+            paginationOptions[key];
+            continue;
+          }
+          alunos.andWhere(`aluno.${key} = ${query[key]}`);
         }
-        if (paginacao.includes(key)) {
-          const paginationOptions = {
-            //TODO implementar regra do all ou remover
-            [`page`]: alunos.skip(
-              Number(
-                ((Number(query['page']) as number) - 1) *
-                  Number(query['take'] as number),
-              ) as number,
-            ),
-            [`take`]: alunos.take(Number(query['take'])),
-          };
-          paginationOptions[key];
-          continue;
-        }
-        alunos.andWhere(`aluno.${key} = ${query[key]}`);
       }
       const result = await alunos.getMany();
       // console.log(result);
@@ -64,11 +70,11 @@ export class AlunoService {
       return { result, count };
     } catch (error) {
       console.log(error);
-      throw new BadRequestException(error);
+      throw new InternalServerErrorException(error);
     }
   }
 
-  async criarAluno(aluno: CriarAlunoDto, req): Promise<IAluno> {
+  async criarAluno(aluno: CriarAlunoDto): Promise<IAluno> {
     try {
       const alunoExiste: boolean = await this.verificarAlunoCriarExiste(aluno);
       if (alunoExiste) {
@@ -116,10 +122,11 @@ export class AlunoService {
     //TODO:estratégia para adicionar idpublico antes de criar o registro no banco
   }
 
-  async atualizarAluno(id: number, aluno: AtualizarAlunoDto) {
+  async atualizarAluno(id: number, aluno: AtualizarAlunoDto): Promise<IAluno> {
     const { idPrivado, idPublico, ...alunoAtualizar } = aluno;
     try {
-      return await this.alunoRepository.update(id, alunoAtualizar);
+      await this.alunoRepository.update(id, alunoAtualizar);
+      return aluno as IAluno;
     } catch (error) {
       throw new BadRequestException(error);
     }
@@ -148,6 +155,10 @@ export class AlunoService {
   }
 
   async deletar(idPrivado: number): Promise<void> {
-    await this.alunoRepository.softDelete(idPrivado);
+    try {
+      await this.alunoRepository.softDelete(idPrivado);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 }

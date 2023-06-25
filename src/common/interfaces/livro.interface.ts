@@ -10,7 +10,7 @@ export interface ILivro {
   prateleira?: string;
   qntdPaginas: string;
   unidades: number;
-  dtAlteracao?: Timestamp;
-  dtCriacao?: Timestamp;
-  dtDeletado?: Timestamp;
+  dtAlteracao?: string | Timestamp | Date;
+  dtCriacao?: string | Timestamp | Date;
+  dtDeletado?: string | Timestamp | Date;
 }

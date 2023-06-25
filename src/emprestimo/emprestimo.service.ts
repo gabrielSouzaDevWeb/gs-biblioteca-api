@@ -306,7 +306,9 @@ export class EmprestimoService {
             } as Partial<Emprestimo>);
 
           const hoje = new Date();
-          const dtVencimento = new Date(hoje.setDate(hoje.getDate() + 7));
+          const dtVencimento = new Date(
+            hoje.setDate(hoje.getDate() + 7),
+          ).toDateString();
           for (const livro of livros) {
             await transactionManager.getRepository(EmprestimoLivros).insert({
               idEmprestimo: novosEmprestimosCriados[0].idPrivado,

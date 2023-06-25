@@ -17,7 +17,7 @@ export interface IAluno {
   tel: string;
   salas?: Array<any>;
   telResponsavel: string;
-  dtAlteracao?: Timestamp;
-  dtCriacao?: Timestamp;
-  dtDeletado?: Timestamp;
+  dtAlteracao?: string | Timestamp | Date;
+  dtCriacao?: string | Timestamp | Date;
+  dtDeletado?: string | Timestamp | Date;
 }

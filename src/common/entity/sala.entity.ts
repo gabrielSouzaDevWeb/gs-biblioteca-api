@@ -1,6 +1,6 @@
-import { AbstractEntity } from 'src/common/entity/abstract.entity';
-import { Aluno } from 'src/common/entity/aluno.entity';
 import { Column, Entity, OneToMany } from 'typeorm';
+import { AbstractEntity } from './abstract.entity';
+import { Aluno } from './aluno.entity';
 
 @Entity({ name: 'sala', orderBy: { dtCriacao: 'DESC' } })
 export class Sala extends AbstractEntity {

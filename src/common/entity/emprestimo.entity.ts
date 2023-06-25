@@ -1,8 +1,6 @@
-import { Aluno } from 'src/common/entity/aluno.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { AbstractEntity, Aluno, EmprestimoLivros } from '.';
 import { IAbstractColumns } from '../types/abstract-columns.type';
-import { AbstractEntity } from './abstract.entity';
-import { EmprestimoLivros } from './livro-emprestado.entity';
 
 @Entity({ name: 'emprestimo', orderBy: { dtCriacao: 'DESC' } })
 export class Emprestimo extends AbstractEntity implements IAbstractColumns {
@@ -39,5 +37,5 @@ export class Emprestimo extends AbstractEntity implements IAbstractColumns {
     (emprestimoLivros) => emprestimoLivros.emprestimo,
   )
   @JoinColumn({ name: 'livroEmprestado', referencedColumnName: 'idPrivado' })
-  livrosEmprestado: EmprestimoLivros[];
+  livrosEmprestado?: EmprestimoLivros[];
 }

@@ -14,15 +14,23 @@ export class AbstractEntity implements IAbstractColumns {
   @PrimaryGeneratedColumn({ name: 'id_privado' })
   idPrivado: number;
 
-  @Column({ name: 'id_publico' }) 
+  @Column({ name: 'id_publico' })
   idPublico: string;
 
   @CreateDateColumn({ name: 'dt_criacao' })
-  dtCriacao: Timestamp;
+  dtCriacao: string | Timestamp | Date;
 
   @UpdateDateColumn({ name: 'dt_alteracao' })
-  dtAlteracao: Timestamp;
+  dtAlteracao: string | Timestamp | Date;
 
   @DeleteDateColumn({ name: 'dt_deletado' })
-  dtDeletado: Timestamp;
+  dtDeletado: string | Timestamp | Date;
+
+  constructor(abstract: Partial<AbstractEntity>) {
+    this.idPrivado = abstract?.idPrivado;
+    this.idPublico = abstract?.idPublico;
+    this.dtCriacao = abstract?.dtCriacao;
+    this.dtAlteracao = abstract?.dtAlteracao;
+    this.dtDeletado = abstract?.dtDeletado;
+  }
 }
