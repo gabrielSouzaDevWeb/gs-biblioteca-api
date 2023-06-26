@@ -11,7 +11,7 @@ import { AbstractEntity, Emprestimo, Livro } from '.';
 @Entity({ name: 'emprestimo_livros', orderBy: { dtCriacao: 'DESC' } })
 export class EmprestimoLivros extends AbstractEntity {
   @Column({ name: 'status_emprestimo' })
-  statusLocacao: number;
+  statusLocacao: LIVRO_EMPRESTADO_STATUS;
 
   @CreateDateColumn({ name: 'dt_renovacao' })
   dtRenovacao: string | Timestamp | Date;

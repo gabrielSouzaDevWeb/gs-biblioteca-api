@@ -1,7 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Inject } from '@nestjs/common/decorators';
 import { CriarLivroDto } from 'src/common/dto/criar-livro.dto';
-import { Repository } from 'typeorm';
+import { EmprestimoLivros } from 'src/common/entity';
+import { LIVRO_EMPRESTADO_STATUS } from 'src/common/enum/livro-emprestado.enum';
+import { EntityManager, Repository } from 'typeorm';
 import { AtualizarLivroDto } from '../common/dto/atualizar-livro.dto';
 import { Livro } from '../common/entity/livro.entity';
 import { ILivro } from '../common/interfaces/livro.interface';
@@ -58,10 +60,42 @@ export class LivroService {
     }
   }
 
-  async atualizarLivro(id: number, livro: AtualizarLivroDto) {
-    const { idPrivado, idPublico, ...livroAtualizar } = livro;
+  async atualizarLivro(idPrivado: number, livro: AtualizarLivroDto) {
+    const { idPrivado: id, idPublico, ...livroAtualizar } = livro;
     try {
-      return await this.livroRepository.update(id, livroAtualizar);
+      /**
+       * TODO: Regra para atualizar livro, levar em conta os que já estão emprestados
+       */
+      const repository = this.livroRepository.manager;
+
+      await repository.transaction(async (transaction: EntityManager) => {
+        const emprestimoLivros = await transaction
+          .getRepository(EmprestimoLivros)
+          .createQueryBuilder('emprestimoLivros');
+        const emprestimos = await emprestimoLivros
+          .where('emprestimoLivros.idLivroEmprestado = :idPrivado', {
+            idPrivado,
+          })
+          .andWhere(
+            'emprestimoLivros.statusLocacao in (:...arrStatusIndisponiveis)',
+            {
+              arrStatusIndisponiveis: [
+                LIVRO_EMPRESTADO_STATUS.EMPRESTADO,
+                LIVRO_EMPRESTADO_STATUS.EMPRESTADO_RENOVADO,
+                LIVRO_EMPRESTADO_STATUS.EM_ATRASO,
+              ],
+            },
+          )
+          .getMany();
+        if (livro.unidades < emprestimos.length) {
+          throw new BadRequestException(
+            'Não é possível remover uma exemplar emprestado',
+          );
+        }
+        await transaction
+          .getRepository(Livro)
+          .update(idPrivado, livroAtualizar);
+      });
     } catch (error) {
       throw new BadRequestException(error);
     }
@@ -122,6 +156,38 @@ export class LivroService {
   }
 
   async deletar(idPrivado: number): Promise<void> {
-    await this.livroRepository.softDelete(idPrivado);
+    /**
+     * TODO: regra para deletar livro, levar em conta os que já estão alugados.
+     */
+    const repository = this.livroRepository.manager;
+
+    await repository.transaction(async (transaction: EntityManager) => {
+      const emprestimoLivros = await transaction
+        .getRepository(EmprestimoLivros)
+        .createQueryBuilder('emprestimoLivros');
+      const emprestimos = await emprestimoLivros
+        .where('emprestimoLivros.idLivroEmprestado = :idPrivado', {
+          idPrivado,
+        })
+        .andWhere(
+          'emprestimoLivros.statusLocacao in (:...arrStatusIndisponiveis)',
+          {
+            arrStatusIndisponiveis: [
+              LIVRO_EMPRESTADO_STATUS.EMPRESTADO,
+              LIVRO_EMPRESTADO_STATUS.EMPRESTADO_RENOVADO,
+              LIVRO_EMPRESTADO_STATUS.EM_ATRASO,
+            ],
+          },
+        )
+        .getMany();
+      if (emprestimos.length !== 0) {
+        throw new BadRequestException(
+          `Não é possível remover livro que possua ${
+            emprestimos.length === 1 ? 'exemplar' : 'exemplares'
+          } emprestados!`,
+        );
+      }
+      await this.livroRepository.softDelete(idPrivado);
+    });
   }
 }
