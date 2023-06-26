@@ -5,7 +5,7 @@ import { Aluno } from '../common/entity/aluno.entity';
 import { AlunoController } from './aluno.controller';
 import { AlunoService } from './aluno.service';
 
-const ALUNO_REPOSITORY = {
+export const ALUNO_REPOSITORY = {
   provide: 'ALUNO_REPOSITORY',
   useFactory: (dataSource: DataSource) => dataSource.getRepository(Aluno),
   inject: ['DATA_SOURCE'],

@@ -324,7 +324,7 @@ describe('TestController', () => {
     it('should be return statusCode 500 and alunos array when consultarAluno throws', async () => {
       jest
         .spyOn(service, 'consultarAluno')
-        .mockRejectedValue(new InternalServerErrorException());
+        .mockRejectedValueOnce(new InternalServerErrorException());
       await expect(
         controller.consultarAluno(response, request, query),
       ).rejects.toThrow(new InternalServerErrorException(''));
@@ -392,19 +392,20 @@ describe('TestController', () => {
 
   describe('atualizarAluno RouterHandler', () => {
     it('should return internal server error when atualizarAluno throws', async () => {
+      //Arrange
       const idPrivadoAluno: number = Number('1');
       jest
         .spyOn(service, 'atualizarAluno')
         .mockRejectedValueOnce(err('erro', HttpStatus.INTERNAL_SERVER_ERROR));
-
-      await expect(
-        controller.atualizarAluno(
-          response,
-          request,
-          idPrivadoAluno,
-          mockAlunoAtualizarDTO,
-        ),
-      ).rejects.toThrow(
+      //Act
+      const attAluno = controller.atualizarAluno(
+        response,
+        request,
+        idPrivadoAluno,
+        mockAlunoAtualizarDTO,
+      );
+      //Assert
+      await expect(attAluno).rejects.toThrow(
         new InternalServerErrorException(
           err('erro', HttpStatus.INTERNAL_SERVER_ERROR),
         ),
